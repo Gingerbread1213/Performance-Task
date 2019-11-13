@@ -1,4 +1,4 @@
-package com.stem_project.timemanagement_app;
+package org.erhs.stem.project.time_management;
 
 import org.junit.Test;
 
