@@ -4,4 +4,7 @@
     <string name="data">数据</string>
     <string name="title">TimeManage</string>
     <string name="settings">设置</string>
+    <string name="userInfo">用户信息</string>
+    <string name="aboutUs">关于我们</string>
+    <string name="changeyourInfo">更改信息</string>
 </resources>
