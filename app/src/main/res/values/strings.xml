@@ -7,4 +7,8 @@
     <string name="userInfo">用户信息</string>
     <string name="aboutUs">关于我们</string>
     <string name="changeyourInfo">更改信息</string>
+    <string name="startNewDay">开始新的一天</string>
+    <string name="setPlan">设置计划</string>
+    <string name="changePlan">更改计划</string>
+    <string name="done">结束新的一天</string>
 </resources>
