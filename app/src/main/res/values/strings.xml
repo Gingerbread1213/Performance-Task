@@ -11,4 +11,5 @@
     <string name="setPlan">设置计划</string>
     <string name="changePlan">更改计划</string>
     <string name="done">结束新的一天</string>
+    <string name="about_content">You can type every word you want in about content</string>>
 </resources>
