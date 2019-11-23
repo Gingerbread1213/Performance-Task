@@ -1,4 +1,4 @@
-package org.erhs.stem.project.time_management;
+package org.erhs.stem.project.time_management.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 import android.widget.Button;
+
+import org.erhs.stem.project.time_management.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,6 +25,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, DataActivity.class);
+                startActivity(intent);
+            }
+        });
+        btnSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
             }
         });

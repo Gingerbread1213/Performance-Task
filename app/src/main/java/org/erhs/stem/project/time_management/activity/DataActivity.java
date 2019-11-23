@@ -1,10 +1,12 @@
-package org.erhs.stem.project.time_management;
+package org.erhs.stem.project.time_management.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import org.erhs.stem.project.time_management.R;
 
 public class DataActivity extends AppCompatActivity {
 

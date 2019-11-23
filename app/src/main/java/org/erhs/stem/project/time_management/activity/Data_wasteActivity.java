@@ -1,4 +1,4 @@
-package org.erhs.stem.project.time_management;
+package org.erhs.stem.project.time_management.activity;
 
 import android.widget.Button;
 

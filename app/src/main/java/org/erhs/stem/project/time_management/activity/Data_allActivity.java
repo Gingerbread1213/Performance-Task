@@ -1,4 +1,4 @@
-package org.erhs.stem.project.time_management;
+package org.erhs.stem.project.time_management.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+
+import org.erhs.stem.project.time_management.R;
 
 public class Data_allActivity extends AppCompatActivity {
     private ImageButton ImBtnAlldata;
