@@ -1,31 +1,57 @@
 package org.erhs.stem.project.time_management.domain;
 
-import java.util.Date;
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverter;
+import androidx.room.TypeConverters;
 
-/**
- * Event class represents an event
- */
+import java.util.Date;
+import java.util.UUID;
+
+@Entity(tableName = "events")
+@TypeConverters({EventType.class, Event.DateConverter.class})
 public class Event {
 
-    private final EventType eventType;
-    private final String eventTypeComplement;
+    @PrimaryKey
+    @NonNull
+    public String id;
 
-    private Date plannedStartTime;
-    private Date plannedEndTime;
-    private Date actualEndTime;
+    public EventType type;
+    public String typeDetail;
 
-    /**
-     * Constructor
-     * @param eventType
-     * @param eventTypeComplement
-     * @param plannedStartTime
-     * @param plannedEndTime
-     */
-    public Event(EventType eventType, String eventTypeComplement, Date plannedStartTime,
-                 Date plannedEndTime) {
-        this.eventType = eventType;
-        this.eventTypeComplement = eventTypeComplement;
-        this.plannedStartTime = plannedStartTime;
-        this.plannedEndTime = plannedEndTime;
+    public String description;
+
+    public Date plannedStart;
+    public Date plannedEnd;
+
+    public Date actualStart;
+    public Date actualEnd;
+
+    public Event() {
+        id = UUID.randomUUID().toString();
+    }
+
+    public static Event createEvent(EventType type, String typeDetail,
+                                    Date plannedStart, Date plannedEnd) {
+        Event event = new Event();
+        event.type = type;
+        event.typeDetail = typeDetail;
+        event.plannedStart = plannedStart;
+        event.plannedEnd = plannedEnd;
+        return event;
+    }
+
+    public static class DateConverter {
+
+        @TypeConverter
+        public static Date toDate(Long value) {
+            return value == null ? null : new Date(value);
+        }
+
+        @TypeConverter
+        public static Long fromDate(Date date) {
+            return date == null ? null : date.getTime();
+        }
     }
 }

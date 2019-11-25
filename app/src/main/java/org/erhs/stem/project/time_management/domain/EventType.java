@@ -1,18 +1,31 @@
 package org.erhs.stem.project.time_management.domain;
 
+import androidx.room.TypeConverter;
+
 public enum EventType {
 
-    DINING("dining"),
+    DINE("dine"),
     STUDY("study"),
     OTHER("other");
 
-    private final String name;
+    private final String value;
 
-    EventType(String name) {
-        this.name = name;
+    EventType(String value) {
+        this.value = value;
     }
 
-    public EventType parseFrom(String name) {
-        return DINING;
+    @TypeConverter
+    public static EventType toEventType(String value) {
+        for (EventType eventType : EventType.values()) {
+            if (eventType.value.equalsIgnoreCase(value)) {
+                return eventType;
+            }
+        }
+        return null;
+    }
+
+    @TypeConverter
+    public static String fromEventType(EventType eventType) {
+        return eventType == null ? null : eventType.value;
     }
 }
