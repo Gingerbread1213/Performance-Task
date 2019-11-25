@@ -17,6 +17,8 @@ public class Event {
     @NonNull
     public String id;
 
+    public String sessionId;
+
     public EventType type;
     public String typeDetail;
 
@@ -28,13 +30,14 @@ public class Event {
     public Date actualStart;
     public Date actualEnd;
 
-    public Event() {
+    public Event(String sessionId) {
         id = UUID.randomUUID().toString();
+        this.sessionId = sessionId;
     }
 
-    public static Event createEvent(EventType type, String typeDetail,
+    public static Event createEvent(String sessionId, EventType type, String typeDetail,
                                     Date plannedStart, Date plannedEnd) {
-        Event event = new Event();
+        Event event = new Event(sessionId);
         event.type = type;
         event.typeDetail = typeDetail;
         event.plannedStart = plannedStart;
