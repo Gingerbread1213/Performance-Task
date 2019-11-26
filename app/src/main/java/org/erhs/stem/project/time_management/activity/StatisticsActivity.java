@@ -7,14 +7,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.erhs.stem.project.time_management.R;
 
-public class AboutActivity extends AppCompatActivity {
+public class StatisticsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about);
+        setContentView(R.layout.activity_statistics);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(R.string.action_about);
+        getSupportActionBar().setTitle(R.string.action_statistics);
     }
 
     @Override

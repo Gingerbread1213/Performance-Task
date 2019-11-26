@@ -15,12 +15,12 @@ public class Data_allActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_data);
+        setContentView(R.layout.activity_statistics);
 
        ImBtnAlldata = findViewById(R.id.ImBtnAlldata);
        ImBtnAlldata.setOnClickListener(new View.OnClickListener() {
            @Override
-           public void onClick(View v) { Intent intent = new Intent(Data_allActivity.this, DataActivity.class);
+           public void onClick(View v) { Intent intent = new Intent(Data_allActivity.this, StatisticsActivity.class);
                startActivity(intent);
            }
        });

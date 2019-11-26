@@ -25,7 +25,9 @@ public class MainActivity extends AppCompatActivity {
         ibStatistics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, StatisticsActivity.class);
+                startActivity(intent);
             }
         });
 
