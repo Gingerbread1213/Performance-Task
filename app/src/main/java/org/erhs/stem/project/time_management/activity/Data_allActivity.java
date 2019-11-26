@@ -20,7 +20,7 @@ public class Data_allActivity extends AppCompatActivity {
        ImBtnAlldata = findViewById(R.id.ImBtnAlldata);
        ImBtnAlldata.setOnClickListener(new View.OnClickListener() {
            @Override
-           public void onClick(View v) { Intent intent = new Intent(Data_allActivity.this, StatisticsActivity.class);
+           public void onClick(View v) { Intent intent = new Intent(Data_allActivity.this, StatisticsChartActivity.class);
                startActivity(intent);
            }
        });

@@ -11,18 +11,22 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.LandingActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.StatisticsChartActivity" />
+        <activity android:name=".activity.SettingsActivity" />
+        <activity android:name=".activity.AboutActivity" />
+        <activity
+            android:name=".activity.EventEditingActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".activity.StatisticsActivity"/>
-        <activity android:name=".activity.SettingsActivity"/>
-        <activity android:name=".activity.AboutActivity"/>
     </application>
 
 </manifest>

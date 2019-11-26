@@ -1,13 +1,17 @@
 package org.erhs.stem.project.time_management.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import org.erhs.stem.project.time_management.R;
+
+import java.util.UUID;
 
 public class LandingActivity extends AppCompatActivity {
 
@@ -20,6 +24,12 @@ public class LandingActivity extends AppCompatActivity {
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences preferences = PreferenceManager
+                        .getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString(getString(R.string.started), UUID.randomUUID().toString());
+                editor.commit();
+
                 Intent intent = new Intent();
                 intent.setClass(LandingActivity.this, MainActivity.class);
                 startActivity(intent);
@@ -31,7 +41,7 @@ public class LandingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(LandingActivity.this, StatisticsActivity.class);
+                intent.setClass(LandingActivity.this, StatisticsChartActivity.class);
                 startActivity(intent);
             }
         });
@@ -45,5 +55,13 @@ public class LandingActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        SharedPreferences preferences = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext());
+        if (preferences.getString(getString(R.string.started), null) != null) {
+            Intent intent = new Intent();
+            intent.setClass(LandingActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
     }
 }

@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.erhs.stem.project.time_management.R;
 
-public class StatisticsActivity extends AppCompatActivity {
+public class StatisticsChartActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

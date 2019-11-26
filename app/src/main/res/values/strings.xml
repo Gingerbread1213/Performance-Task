@@ -6,6 +6,7 @@
     <string name="action_about">About Us</string>
     <string name="action_settings">Settings</string>
     <string name="action_end">End</string>
+    <string name="action_edit_done">Done</string>
 
     <string name="data">数据</string>
     <string name="title">TimeManage</string>
@@ -18,4 +19,7 @@
     <string name="changePlan">更改计划</string>
     <string name="done">结束新的一天</string>
     <string name="about_content">You can type every word you want in about content</string>
+
+    <string name="started">started</string>
+
 </resources>
