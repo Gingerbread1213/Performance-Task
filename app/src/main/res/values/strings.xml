@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Time Management</string>
     <string name="action_settings">Settings</string>
+    <string name="action_end">End</string>
+
     <string name="data">数据</string>
     <string name="title">TimeManage</string>
     <string name="settings">设置</string>
