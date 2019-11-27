@@ -7,6 +7,9 @@
     <string name="action_settings">Settings</string>
     <string name="action_end">End</string>
     <string name="action_edit_done">Done</string>
+    <string name="event_type">event_type</string>
+    <string name="event_planned">Planned: Test1 - Test2</string>
+    <string name="event_actual">Actual: Test1 - Test2</string>
 
     <string name="data">数据</string>
     <string name="title">TimeManage</string>
@@ -21,5 +24,8 @@
     <string name="about_content">You can type every word you want in about content</string>
 
     <string name="started">started</string>
+    <string name="edit_mode">edit_mode</string>
+    <string name="mode_add">mode_add</string>
+    <string name="mode_modify">mode_modify</string>
 
 </resources>

@@ -2,7 +2,6 @@ package org.erhs.stem.project.time_management.service;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.text.format.DateUtils;
 
 import androidx.lifecycle.LiveData;
 
@@ -10,13 +9,16 @@ import org.erhs.stem.project.time_management.domain.Event;
 import org.erhs.stem.project.time_management.domain.EventDao;
 import org.erhs.stem.project.time_management.domain.EventDatabase;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 public class EventRepository {
+
+    public static LiveData<List<Event>> getEventsBySessionId(final Context context,
+                                                             final String sessionId) {
+        return getEventDao(context).getEventsBySessionId(sessionId);
+    }
 
     public static LiveData<List<Event>> getEventsByDateRange(final Context context,
                                                              final Date start, final Date end) {

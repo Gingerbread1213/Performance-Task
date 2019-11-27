@@ -40,10 +40,10 @@
                 android:id="@+id/action_statistics"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_timeline_black_24dp"
+                android:drawableLeft="@drawable/ic_show_chart_black_24dp"
                 android:drawablePadding="8dp"
                 android:text="@string/action_statistics"
-                android:drawableStart="@drawable/ic_timeline_black_24dp" />
+                android:drawableStart="@drawable/ic_show_chart_black_24dp" />
 
             <Button
                 android:id="@+id/action_about"

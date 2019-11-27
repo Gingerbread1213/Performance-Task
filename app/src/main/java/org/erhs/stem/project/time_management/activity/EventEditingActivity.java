@@ -2,7 +2,6 @@ package org.erhs.stem.project.time_management.activity;
 
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,7 +34,15 @@ public class EventEditingActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_edit_done:
-                // do something
+                Bundle bundle = getIntent().getExtras();
+                if (bundle != null) {
+                    if (getString(R.string.mode_add).equals(
+                            bundle.getString(getString(R.string.edit_mode)))) {
+                        //TODO
+                    } else {
+                        //TODO
+                    }
+                }
                 finish();
                 return true;
             default:
