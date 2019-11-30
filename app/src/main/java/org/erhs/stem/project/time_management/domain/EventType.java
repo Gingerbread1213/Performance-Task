@@ -6,6 +6,14 @@ public enum EventType {
 
     DINING("dining"),
     STUDY("study"),
+    READ("read"),
+    WORK("work"),
+    SPORT("sport"),
+    LEISURE("leisure"),
+    NAP("nap"),
+    MUSIC("music"),
+    HOUSEWORK("housework"),
+    PET("pet"),
     OTHER("other");
 
     private final String value;
