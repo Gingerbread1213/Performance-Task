@@ -11,7 +11,7 @@
 
     <Preference
         app:key="about"
-        app:title="@string/aboutUs">
+        app:title="@string/action_about">
         <intent
             android:action="android.intent.action.VIEW"
             android:targetPackage="org.erhs.stem.project.time_management"

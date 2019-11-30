@@ -67,11 +67,14 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         holder.eventType.setImageDrawable(resources.getDrawable(EVENT_IMAGES.get(event.type)));
 
         if (event.actualStart == null) {
-            holder.status.setImageDrawable(resources.getDrawable(R.drawable.ic_launch_black_24dp));
+            holder.status.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_launch_black_24dp, 0, 0);
+            holder.status.setText(resources.getString(R.string.not_started));
         } else if (event.actualEnd == null) {
-            holder.status.setImageDrawable(resources.getDrawable(R.drawable.ic_directions_run_black_24dp));
+            holder.status.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_directions_run_black_24dp, 0, 0);
+            holder.status.setText(resources.getString(R.string.in_progress));
         } else {
-            holder.status.setImageDrawable(resources.getDrawable(R.drawable.ic_done_black_24dp));
+            holder.status.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_done_black_24dp, 0, 0);
+            holder.status.setText(resources.getString(R.string.done));
         }
 
         holder.description.setText(event.description);
@@ -126,11 +129,11 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView eventType;
-        private ImageView status;
 
         private TextView description;
         private TextView planned;
         private TextView actual;
+        private TextView status;
 
         private ImageButton edit;
         private ImageButton delete;
@@ -139,10 +142,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         public ViewHolder(View itemView) {
             super(itemView);
             eventType = itemView.findViewById(R.id.event_type);
-            status = itemView.findViewById(R.id.status);
             description = itemView.findViewById(R.id.description);
             planned = itemView.findViewById(R.id.planned);
             actual = itemView.findViewById(R.id.actual);
+            status = itemView.findViewById(R.id.status);
             edit = itemView.findViewById(R.id.action_edit);
             delete = itemView.findViewById(R.id.action_delete);
             process = itemView.findViewById(R.id.action_process);

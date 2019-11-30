@@ -11,22 +11,16 @@
     <string name="description">Description</string>
     <string name="planned_start">Planned Start Time</string>
     <string name="planned_end">Planned End Time</string>
-    <string name="event_planned">Planned: %1$s - %2$s</string>
-    <string name="event_actual">Actual: %1$s - %2$s</string>
+    <string name="event_planned">%1$s - %2$s</string>
+    <string name="event_actual">%1$s - %2$s</string>
     <string name="set_planned_start_time">Set Planned Start Time</string>
     <string name="set_planned_end_time">Set Planned End Time</string>
-
-    <string name="data">数据</string>
-    <string name="title">TimeManage</string>
-    <string name="settings">设置</string>
-    <string name="userInfo">用户信息</string>
-    <string name="aboutUs">关于我们</string>
-    <string name="changeyourInfo">更改信息</string>
-    <string name="startNewDay">开始新的一天</string>
-    <string name="setPlan">设置计划</string>
-    <string name="changePlan">更改计划</string>
-    <string name="done">结束新的一天</string>
+    <string name="not_started">Not Started</string>
+    <string name="in_progress">In Progress</string>
+    <string name="done">Done</string>
     <string name="about_content">You can type every word you want in about content</string>
+    <string name="planned">Planned: </string>
+    <string name="actual">Actual: </string>
 
     <string name="started">started</string>
     <string name="edit_mode">edit_mode</string>
@@ -37,5 +31,4 @@
     <string name="planned_end_hour">planned_end_hour</string>
     <string name="planned_end_minute">planned_end_minute</string>
     <string name="event_id">event_id</string>
-
 </resources>
