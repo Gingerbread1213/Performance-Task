@@ -12,7 +12,7 @@ import java.util.List;
 @Dao
 public interface EventDao {
 
-    @Query("SELECT * FROM events WHERE sessionId = :sessionId")
+    @Query("SELECT * FROM events WHERE sessionId = :sessionId ORDER BY plannedStart ASC")
     LiveData<List<Event>> getEventsBySessionId(String sessionId);
 
     @Query("SELECT * FROM events WHERE plannedStart BETWEEN :start AND :end")

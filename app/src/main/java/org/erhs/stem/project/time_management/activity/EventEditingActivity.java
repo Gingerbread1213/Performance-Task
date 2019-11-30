@@ -1,9 +1,10 @@
 package org.erhs.stem.project.time_management.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -67,20 +68,34 @@ public class EventEditingActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+
         switch (item.getItemId()) {
             case android.R.id.home:
+                setResult(Activity.RESULT_CANCELED, intent);
                 finish();
                 return true;
             case R.id.action_edit_done:
-                Bundle bundle = getIntent().getExtras();
-                if (bundle != null) {
-                    if (getString(R.string.mode_add).equals(
-                            bundle.getString(getString(R.string.edit_mode)))) {
-                        //TODO
-                    } else {
-                        //TODO
-                    }
+                Bundle origin = getIntent().getExtras();
+                if (origin != null) {
+                    bundle.putString(getString(R.string.event_id),
+                            origin.getString(getString(R.string.event_id), ""));
                 }
+                bundle.putString(getString(R.string.event_type),
+                        EventType.fromEventType((EventType) eventType.getSelectedItem()));
+                bundle.putString(getString(R.string.description),
+                        description.getText().toString());
+                bundle.putInt(getString(R.string.planned_start_hour),
+                        plannedStart.getCurrentHour());
+                bundle.putInt(getString(R.string.planned_start_minute),
+                        plannedStart.getCurrentMinute());
+                bundle.putInt(getString(R.string.planned_end_hour),
+                        plannedEnd.getCurrentHour());
+                bundle.putInt(getString(R.string.planned_end_minute),
+                        plannedEnd.getCurrentMinute());
+                intent.putExtras(bundle);
+                setResult(Activity.RESULT_OK, intent);
                 finish();
                 return true;
             default:

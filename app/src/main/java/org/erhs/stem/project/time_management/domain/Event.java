@@ -20,7 +20,7 @@ public class Event {
     public String sessionId;
 
     public EventType type;
-    public String typeDetail;
+    public String typeDetail = "";
 
     public String description;
 
@@ -35,14 +35,18 @@ public class Event {
         this.sessionId = sessionId;
     }
 
-    public static Event createEvent(String sessionId, EventType type, String typeDetail,
+    public static Event createEvent(String sessionId, EventType type, String description,
                                     Date plannedStart, Date plannedEnd) {
         Event event = new Event(sessionId);
         event.type = type;
-        event.typeDetail = typeDetail;
+        event.description = description;
         event.plannedStart = plannedStart;
         event.plannedEnd = plannedEnd;
         return event;
+    }
+
+    public static Event createDefaultEvent(String sessionId) {
+        return createEvent(sessionId, EventType.DINING, "", new Date(), new Date());
     }
 
     public static class DateConverter {

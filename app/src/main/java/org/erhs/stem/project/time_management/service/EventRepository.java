@@ -52,7 +52,7 @@ public class EventRepository {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                getEventDao(context).insertEvent(event);
+                getEventDao(context).deleteEvent(event);
                 return null;
             }
         }.execute();
@@ -62,7 +62,7 @@ public class EventRepository {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                getEventDao(context).insertEvent(event);
+                getEventDao(context).updateEvent(event);
                 return null;
             }
         }.execute();

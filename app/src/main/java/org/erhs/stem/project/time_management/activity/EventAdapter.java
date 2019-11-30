@@ -3,28 +3,49 @@ package org.erhs.stem.project.time_management.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.erhs.stem.project.time_management.R;
 import org.erhs.stem.project.time_management.domain.Event;
+import org.erhs.stem.project.time_management.domain.EventType;
+import org.erhs.stem.project.time_management.service.EventRepository;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
 
-    private Context context;
-    private List<Event> events;
+    private static final Map<EventType, Integer> EVENT_IMAGES = new EnumMap(EventType.class);
+    {
+        EVENT_IMAGES.put(EventType.DINING, R.drawable.ic_restaurant_black_24dp);
+        EVENT_IMAGES.put(EventType.STUDY, R.drawable.ic_school_black_24dp);
+        EVENT_IMAGES.put(EventType.OTHER, R.drawable.ic_face_black_24dp);
+    }
 
-    public EventAdapter(Context context, List<Event> events) {
-        this.context = context;
+    private static final SimpleDateFormat TIME_FORMATTER = new SimpleDateFormat("hh:mm a");
+
+    private static final String TBD = "TBD";
+
+    private Resources resources;
+    private List<Event> events;
+    private MainActivity.OnEditCallback onEditCallback;
+
+    public EventAdapter(Resources resources, List<Event> events,
+                        MainActivity.OnEditCallback onEditCallback) {
+        this.resources = resources;
         this.events = events;
+        this.onEditCallback = onEditCallback;
     }
 
     @Override
@@ -35,30 +56,61 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Event event = events.get(position);
-        Resources resources = context.getResources();
+    public void onBindViewHolder(ViewHolder holder, final int position) {
+        final Event event = events.get(position);
 
-        switch (event.type) {
-            case DINE:
-                break;
-            case OTHER:
-                break;
-            default:
-                break;
+        holder.eventType.setImageDrawable(resources.getDrawable(EVENT_IMAGES.get(event.type)));
+
+        if (event.actualStart == null) {
+            holder.status.setImageDrawable(resources.getDrawable(R.drawable.ic_launch_black_24dp));
+        } else if (event.actualEnd == null) {
+            holder.status.setImageDrawable(resources.getDrawable(R.drawable.ic_directions_run_black_24dp));
+        } else {
+            holder.status.setImageDrawable(resources.getDrawable(R.drawable.ic_done_black_24dp));
         }
 
         holder.description.setText(event.description);
-        holder.planned.setText(resources.getString(R.string.event_planned));
-        holder.actual.setText(resources.getString(R.string.event_actual));
+        holder.planned.setText(resources.getString(R.string.event_planned,
+                formatTime(event.plannedStart), formatTime(event.plannedEnd)));
+        holder.actual.setText(resources.getString(R.string.event_actual,
+                formatTime(event.actualStart), formatTime(event.actualEnd)));
 
-        if (event.actualStart == null) {
+        holder.edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onEditCallback.onEdit(event);
+            }
+        });
 
-        } else if (event.actualEnd == null) {
+        holder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                events.remove(event);
+                EventRepository.deleteEvent(v.getContext(), event);
+                EventAdapter.this.notifyItemRemoved(position);
+            }
+        });
 
-        } else {
+        holder.process.setEnabled(event.actualStart == null || event.actualEnd == null);
+        holder.process.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (event.actualStart == null) {
+                    event.actualStart = new Date();
+                } else if (event.actualEnd == null) {
+                    event.actualEnd = new Date();
+                }
+                EventRepository.updateEvent(v.getContext(), event);
+                EventAdapter.this.notifyItemChanged(position);
+            }
+        });
+    }
 
+    private String formatTime(Date date) {
+        if (date != null) {
+            return TIME_FORMATTER.format(date);
         }
+        return TBD;
     }
 
     @Override
@@ -66,30 +118,29 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         return events.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView eventType;
+        private ImageView status;
+
         private TextView description;
         private TextView planned;
         private TextView actual;
-        private ProgressBar status;
+
+        private ImageButton edit;
+        private ImageButton delete;
+        private ImageButton process;
 
         public ViewHolder(View itemView) {
             super(itemView);
             eventType = itemView.findViewById(R.id.event_type);
+            status = itemView.findViewById(R.id.status);
             description = itemView.findViewById(R.id.description);
             planned = itemView.findViewById(R.id.planned);
             actual = itemView.findViewById(R.id.actual);
-            status = itemView.findViewById(R.id.status);
-        }
-
-        @Override
-        public boolean onLongClick(View v) {
-            Intent intent = new Intent();
-            intent.setClass(v.getContext(), EventEditingActivity.class);
-            v.getContext().startActivity(intent);
-
-            return true;
+            edit = itemView.findViewById(R.id.action_edit);
+            delete = itemView.findViewById(R.id.action_delete);
+            process = itemView.findViewById(R.id.action_process);
         }
     }
 }

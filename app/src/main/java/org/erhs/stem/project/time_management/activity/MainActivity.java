@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Observer;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,15 +18,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.erhs.stem.project.time_management.R;
 import org.erhs.stem.project.time_management.domain.Event;
 import org.erhs.stem.project.time_management.domain.EventType;
+import org.erhs.stem.project.time_management.service.EventRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    interface OnEditCallback {
+        void onEdit(Event event);
+    }
+
+    private static final int REQUEST_CODE_ADD = 1;
+    private static final int REQUEST_CODE_MODIFY = 2;
+
+    private static final String EMPTY = "";
+
     private EventAdapter eventAdapter;
     private List<Event> events = new ArrayList<>();
+
+    private RecyclerView rvEvent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,66 +89,140 @@ public class MainActivity extends AppCompatActivity {
         ibAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-
-                Bundle bundle = new Bundle();
-                bundle.putString(getString(R.string.edit_mode), getString(R.string.mode_add));
-                bundle.putString(getString(R.string.event_type), EventType.fromEventType(EventType.STUDY));
-                bundle.putString(getString(R.string.description), "This is test");
-                bundle.putInt(getString(R.string.planned_start_hour), 8);
-                bundle.putInt(getString(R.string.planned_start_minute), 0);
-                bundle.putInt(getString(R.string.planned_end_hour), 9);
-                bundle.putInt(getString(R.string.planned_end_minute), 0);
-                intent.putExtras(bundle);
-
-                intent.setClass(MainActivity.this, EventEditingActivity.class);
-                startActivity(intent);
+                startEventEditingActivity(Event.createDefaultEvent(getSessionId()),
+                        REQUEST_CODE_ADD);
             }
         });
 
-        RecyclerView rvEvent = findViewById(R.id.rv_event);
+        rvEvent = findViewById(R.id.rv_event);
         rvEvent.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
-        Event e1 = Event.createEvent("TEST", EventType.DINE, "", new Date(), new Date());
-        Event e2= Event.createEvent("TEST", EventType.DINE, "", new Date(), new Date());
-        Event e3 = Event.createEvent("TEST", EventType.DINE, "", new Date(), new Date());
-        Event e4 = Event.createEvent("TEST", EventType.DINE, "", new Date(), new Date());
-        Event e5 = Event.createEvent("TEST", EventType.DINE, "", new Date(), new Date());
-        Event e6 = Event.createEvent("TEST", EventType.DINE, "", new Date(), new Date());
-        Event e7 = Event.createEvent("TEST", EventType.DINE, "", new Date(), new Date());
-        Event e8 = Event.createEvent("TEST", EventType.DINE, "", new Date(), new Date());
-        Event e9 = Event.createEvent("TEST", EventType.DINE, "", new Date(), new Date());
-
-        e1.description = "HELLO";
-        e2.description = "HELLO";
-        e3.description = "HELLO";
-        e4.description = "HELLO";
-        e5.description = "HELLO";
-        e6.description = "HELLO";
-        e7.description = "HELLO";
-        e9.description = "HELLO";
-        e1.description = "HELLO";
-
-        events.add(e1);
-        events.add(e2);
-        events.add(e3);
-        events.add(e4);
-        events.add(e5);
-        events.add(e6);
-        events.add(e7);
-        events.add(e8);
-        events.add(e9);
-
-        eventAdapter = new EventAdapter(getApplicationContext(), events);
+        eventAdapter = new EventAdapter(getApplicationContext().getResources(), events,
+                new OnEditCallback() {
+                    @Override
+                    public void onEdit(Event event) {
+                        startEventEditingActivity(event, REQUEST_CODE_MODIFY);
+                    }
+                });
         rvEvent.setAdapter(eventAdapter);
-        rvEvent.setLongClickable(true);
+
+        EventRepository.getEventsBySessionId(getApplicationContext(), getSessionId())
+                .observe(this, new Observer<List<Event>>() {
+                    @Override
+                    public void onChanged(List<Event> events) {
+                        MainActivity.this.events.clear();
+                        MainActivity.this.events.addAll(events);
+                        eventAdapter.notifyDataSetChanged();
+                    }
+                });
     }
-    
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent resultIntent) {
+        if (resultCode == RESULT_OK) {
+            Bundle bundle = resultIntent.getExtras();
+            if (bundle != null) {
+                String eventId = bundle.getString(getString(R.string.event_id));
+                EventType eventType = EventType.toEventType(
+                        bundle.getString(getString(R.string.event_type), EMPTY));
+                String description = bundle.getString(getString(R.string.description), EMPTY);
+                int plannedStartHour = bundle.getInt(getString(R.string.planned_start_hour), 0);
+                int plannedStartMinute = bundle.getInt(getString(R.string.planned_start_minute), 0);
+                int plannedEndHour = bundle.getInt(getString(R.string.planned_end_hour), 0);
+                int plannedEndMinute = bundle.getInt(getString(R.string.planned_end_minute), 0);
+
+                if (requestCode == REQUEST_CODE_ADD) {
+                    Date plannedStart = new Date();
+                    plannedStart.setHours(plannedStartHour);
+                    plannedStart.setMinutes(plannedStartMinute);
+
+                    Date plannedEnd = new Date();
+                    plannedEnd.setHours(plannedEndHour);
+                    plannedEnd.setMinutes(plannedEndMinute);
+
+                    Event event = Event.createEvent(getSessionId(), eventType, description,
+                            plannedStart, plannedEnd);
+
+                    int insertPos;
+                    for (insertPos = 0; insertPos < events.size(); insertPos++) {
+                        if (events.get(insertPos).plannedStart.getTime() > plannedStart.getTime()) {
+                            break;
+                        }
+                    }
+                    events.add(insertPos, event);
+                    EventRepository.insertEvent(getApplicationContext(), event);
+                    eventAdapter.notifyItemInserted(insertPos);
+                    rvEvent.smoothScrollToPosition(insertPos);
+                } else if (requestCode == REQUEST_CODE_MODIFY) {
+                    int fromPos = -1;
+                    for (int i = 0; i < events.size(); i++) {
+                        if (eventId.equals(events.get(i).id)) {
+                            fromPos = i;
+                            break;
+                        }
+                    }
+                    if (fromPos != -1) {
+                        Event event = events.get(fromPos);
+                        event.type = eventType;
+                        event.description = description;
+                        event.plannedStart.setHours(plannedStartHour);
+                        event.plannedStart.setMinutes(plannedStartMinute);
+                        event.plannedEnd.setHours(plannedEndHour);
+                        event.plannedEnd.setMinutes(plannedEndMinute);
+                        EventRepository.updateEvent(getApplicationContext(), event);
+                        eventAdapter.notifyItemChanged(fromPos);
+                        int toPos;
+                        for (toPos = 0; toPos < events.size(); toPos++) {
+                            if (events.get(toPos).plannedStart.getTime() > event.plannedStart.getTime()) {
+                                break;
+                            }
+                        }
+                        toPos = toPos > fromPos ? toPos - 1 : toPos;
+                        Collections.swap(events, fromPos, toPos);
+                        eventAdapter.notifyItemMoved(fromPos, toPos);
+                        rvEvent.smoothScrollToPosition(toPos);
+                    }
+                }
+            }
+        }
+    }
+
+    private String getSessionId() {
+        SharedPreferences preferences =
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        return preferences.getString(getString(R.string.started), EMPTY);
+    }
+
+    private void startEventEditingActivity(Event event, int requestCode) {
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+        switch (requestCode) {
+            case REQUEST_CODE_ADD:
+                bundle.putString(getString(R.string.edit_mode), getString(R.string.mode_add));
+                break;
+            case REQUEST_CODE_MODIFY:
+                bundle.putString(getString(R.string.edit_mode), getString(R.string.mode_modify));
+                break;
+            default:
+                break;
+        }
+        bundle.putString(getString(R.string.event_id), event.id);
+        bundle.putString(getString(R.string.event_type), EventType.fromEventType(event.type));
+        bundle.putString(getString(R.string.description), event.description);
+        bundle.putInt(getString(R.string.planned_start_hour), event.plannedStart.getHours());
+        bundle.putInt(getString(R.string.planned_start_minute), event.plannedStart.getMinutes());
+        bundle.putInt(getString(R.string.planned_end_hour), event.plannedEnd.getHours());
+        bundle.putInt(getString(R.string.planned_end_minute), event.plannedEnd.getMinutes());
+        intent.putExtras(bundle);
+        intent.setClass(MainActivity.this, EventEditingActivity.class);
+        startActivityForResult(intent, requestCode);
     }
 }

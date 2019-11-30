@@ -11,8 +11,8 @@
     <string name="description">Description</string>
     <string name="planned_start">Planned Start Time</string>
     <string name="planned_end">Planned End Time</string>
-    <string name="event_planned">Planned: Test1 - Test2</string>
-    <string name="event_actual">Actual: Test1 - Test2</string>
+    <string name="event_planned">Planned: %1$s - %2$s</string>
+    <string name="event_actual">Actual: %1$s - %2$s</string>
 
     <string name="data">数据</string>
     <string name="title">TimeManage</string>
@@ -34,5 +34,6 @@
     <string name="planned_start_minute">planned_start_minute</string>
     <string name="planned_end_hour">planned_end_hour</string>
     <string name="planned_end_minute">planned_end_minute</string>
+    <string name="event_id">event_id</string>
 
 </resources>

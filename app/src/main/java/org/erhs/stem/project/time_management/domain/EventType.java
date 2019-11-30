@@ -4,7 +4,7 @@ import androidx.room.TypeConverter;
 
 public enum EventType {
 
-    DINE("dine"),
+    DINING("dining"),
     STUDY("study"),
     OTHER("other");
 
