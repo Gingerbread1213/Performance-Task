@@ -7,7 +7,10 @@
     <string name="action_settings">Settings</string>
     <string name="action_end">End</string>
     <string name="action_edit_done">Done</string>
-    <string name="event_type">event_type</string>
+    <string name="event_type">Event Type</string>
+    <string name="description">Description</string>
+    <string name="planned_start">Planned Start Time</string>
+    <string name="planned_end">Planned End Time</string>
     <string name="event_planned">Planned: Test1 - Test2</string>
     <string name="event_actual">Actual: Test1 - Test2</string>
 
@@ -27,5 +30,9 @@
     <string name="edit_mode">edit_mode</string>
     <string name="mode_add">mode_add</string>
     <string name="mode_modify">mode_modify</string>
+    <string name="planned_start_hour">planned_start_hour</string>
+    <string name="planned_start_minute">planned_start_minite</string>
+    <string name="planned_end_hour">planned_end_hour</string>
+    <string name="planned_end_minute">planned_end_minite</string>
 
 </resources>

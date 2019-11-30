@@ -79,6 +79,12 @@ public class MainActivity extends AppCompatActivity {
 
                 Bundle bundle = new Bundle();
                 bundle.putString(getString(R.string.edit_mode), getString(R.string.mode_add));
+                bundle.putString(getString(R.string.event_type), EventType.fromEventType(EventType.STUDY));
+                bundle.putString(getString(R.string.description), "This is test");
+                bundle.putInt(getString(R.string.planned_start_hour), 8);
+                bundle.putInt(getString(R.string.planned_start_minute), 0);
+                bundle.putInt(getString(R.string.planned_end_hour), 9);
+                bundle.putInt(getString(R.string.planned_end_minute), 0);
                 intent.putExtras(bundle);
 
                 intent.setClass(MainActivity.this, EventEditingActivity.class);
@@ -121,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
         eventAdapter = new EventAdapter(getApplicationContext(), events);
         rvEvent.setAdapter(eventAdapter);
+        rvEvent.setLongClickable(true);
     }
     
     @Override

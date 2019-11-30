@@ -1,6 +1,7 @@
 package org.erhs.stem.project.time_management.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,7 +66,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         return events.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
 
         private ImageView eventType;
         private TextView description;
@@ -80,6 +81,15 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             planned = itemView.findViewById(R.id.planned);
             actual = itemView.findViewById(R.id.actual);
             status = itemView.findViewById(R.id.status);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            Intent intent = new Intent();
+            intent.setClass(v.getContext(), EventEditingActivity.class);
+            v.getContext().startActivity(intent);
+
+            return true;
         }
     }
 }
