@@ -1,9 +1,6 @@
 package org.erhs.stem.project.time_management.activity;
 
-import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +27,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     {
         EVENT_IMAGES.put(EventType.DINING, R.drawable.ic_restaurant_black_24dp);
         EVENT_IMAGES.put(EventType.STUDY, R.drawable.ic_school_black_24dp);
-        EVENT_IMAGES.put(EventType.OTHER, R.drawable.ic_face_black_24dp);
         EVENT_IMAGES.put(EventType.READ, R.drawable.ic_book);
         EVENT_IMAGES.put(EventType.SPORT, R.drawable.ic_barbell);
         EVENT_IMAGES.put(EventType.MUSIC, R.drawable.ic_face_black_24dp);
@@ -39,8 +35,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         EVENT_IMAGES.put(EventType.PET, R.drawable.ic_face_black_24dp);
         EVENT_IMAGES.put(EventType.WORK, R.drawable.ic_work);
         EVENT_IMAGES.put(EventType.LEISURE, R.drawable.ic_game_console);
-
-
+        EVENT_IMAGES.put(EventType.OTHER, R.drawable.ic_face_black_24dp);
     }
 
     private static final SimpleDateFormat TIME_FORMATTER = new SimpleDateFormat("hh:mm a");

@@ -13,6 +13,8 @@
     <string name="planned_end">Planned End Time</string>
     <string name="event_planned">Planned: %1$s - %2$s</string>
     <string name="event_actual">Actual: %1$s - %2$s</string>
+    <string name="set_planned_start_time">Set Planned Start Time</string>
+    <string name="set_planned_end_time">Set Planned End Time</string>
 
     <string name="data">数据</string>
     <string name="title">TimeManage</string>

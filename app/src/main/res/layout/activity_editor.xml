@@ -16,31 +16,41 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize">
+        android:layout_marginTop="?attr/actionBarSize"
+        android:padding="24dp"
+        android:focusableInTouchMode="true">
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:layout_margin="3dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/event_type" />
+                android:layout_marginRight="5dp"
+                android:gravity="end"
+                android:text="@string/event_type"
+                android:layout_marginEnd="5dp" />
 
             <Spinner
                 android:id="@+id/event_type"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:layout_margin="3dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/description" />
+                android:layout_marginRight="5dp"
+                android:gravity="end"
+                android:text="@string/description"
+                android:layout_marginEnd="5dp" />
 
             <EditText
                 android:id="@+id/description"
@@ -51,34 +61,44 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:layout_margin="3dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/planned_start" />
+                android:layout_marginRight="5dp"
+                android:gravity="end"
+                android:text="@string/planned_start"
+                android:layout_marginEnd="5dp" />
 
-            <TimePicker
+            <EditText
                 android:id="@+id/planned_start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:timePickerMode="spinner"/>
+                android:ems="10"
+                android:inputType="time" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:layout_margin="3dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/planned_end" />
+                android:layout_marginRight="5dp"
+                android:gravity="end"
+                android:text="@string/planned_end"
+                android:layout_marginEnd="5dp" />
 
-            <TimePicker
+            <EditText
                 android:id="@+id/planned_end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:timePickerMode="spinner"/>
+                android:ems="10"
+                android:inputType="time" />
         </TableRow>
     </TableLayout>
 
