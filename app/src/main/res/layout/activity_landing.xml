@@ -32,26 +32,26 @@
                 android:id="@+id/action_start"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_launch_black_24dp"
+                android:drawableLeft="@drawable/icon_start"
                 android:text="@string/action_start"
-                android:drawableStart="@drawable/ic_launch_black_24dp" />
+                android:drawableStart="@drawable/icon_start" />
 
             <Button
                 android:id="@+id/action_statistics"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_show_chart_black_24dp"
+                android:drawableLeft="@drawable/ic_statistic"
                 android:drawablePadding="8dp"
                 android:text="@string/action_statistics"
-                android:drawableStart="@drawable/ic_show_chart_black_24dp" />
+                android:drawableStart="@drawable/ic_statistic" />
 
             <Button
                 android:id="@+id/action_about"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_face_black_24dp"
+                android:drawableLeft="@drawable/ic_about"
                 android:text="@string/action_about"
-                android:drawableStart="@drawable/ic_face_black_24dp" />
+                android:drawableStart="@drawable/ic_about" />
         </LinearLayout>
 
     </LinearLayout>

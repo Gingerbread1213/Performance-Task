@@ -14,7 +14,9 @@ public enum EventType {
     MUSIC("music"),
     HOUSEWORK("housework"),
     PET("pet"),
+    SHOPPING("shopping"),
     OTHER("other");
+
 
     private final String value;
 

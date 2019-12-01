@@ -29,13 +29,15 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         EVENT_IMAGES.put(EventType.STUDY, R.drawable.ic_school_black_24dp);
         EVENT_IMAGES.put(EventType.READ, R.drawable.ic_book);
         EVENT_IMAGES.put(EventType.SPORT, R.drawable.ic_barbell);
-        EVENT_IMAGES.put(EventType.MUSIC, R.drawable.ic_face_black_24dp);
-        EVENT_IMAGES.put(EventType.HOUSEWORK, R.drawable.ic_face_black_24dp);
-        EVENT_IMAGES.put(EventType.NAP, R.drawable.ic_face_black_24dp);
-        EVENT_IMAGES.put(EventType.PET, R.drawable.ic_face_black_24dp);
+        EVENT_IMAGES.put(EventType.MUSIC, R.drawable.ic_music);
+        EVENT_IMAGES.put(EventType.HOUSEWORK, R.drawable.ic_house);
+        EVENT_IMAGES.put(EventType.NAP, R.drawable.ic_sleep);
+        EVENT_IMAGES.put(EventType.PET, R.drawable.ic_pet);
         EVENT_IMAGES.put(EventType.WORK, R.drawable.ic_work);
         EVENT_IMAGES.put(EventType.LEISURE, R.drawable.ic_game_console);
-        EVENT_IMAGES.put(EventType.OTHER, R.drawable.ic_face_black_24dp);
+        EVENT_IMAGES.put(EventType.OTHER, R.drawable.ic_other);
+        EVENT_IMAGES.put(EventType.SHOPPING, R.drawable.ic_shopping);
+
     }
 
     private static final SimpleDateFormat TIME_FORMATTER = new SimpleDateFormat("hh:mm a");
