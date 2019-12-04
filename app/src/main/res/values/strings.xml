@@ -21,7 +21,7 @@
     <string name="about_content">You can type every word you want in about content</string>
     <string name="planned">Planned: </string>
     <string name="actual">Actual: </string>
-    <string name="last_week">Last Week</string>
+    <string name="empty" />
 
     <string name="started">started</string>
     <string name="edit_mode">edit_mode</string>
