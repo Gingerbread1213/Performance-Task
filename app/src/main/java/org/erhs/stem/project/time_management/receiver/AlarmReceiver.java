@@ -1,25 +1,20 @@
 package org.erhs.stem.project.time_management.receiver;
 
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import org.erhs.stem.project.time_management.R;
 import org.erhs.stem.project.time_management.activity.MainActivity;
-import org.erhs.stem.project.time_management.common.Config;
 import org.erhs.stem.project.time_management.common.Utility;
-import org.erhs.stem.project.time_management.domain.Event;
-import org.erhs.stem.project.time_management.service.EventRepository;
-
-import java.util.List;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
@@ -51,6 +46,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setContentText(description)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(notifyPendingIntent)
+                .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE)
                 .setAutoCancel(true);
 
         NotificationManagerCompat.from(context).notify(notificationId, builder.build());

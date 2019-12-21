@@ -45,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
         void onDelete(Event event);
     }
 
-    interface OnRemindCallback {
-        void onRemind(Event event);
+    interface OnProcessCallback {
+        void onProcess(Event event);
     }
 
     private static final int REQUEST_CODE_ADD = 1;
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         rvEvent.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         eventAdapter = new EventAdapter(getApplicationContext().getResources(), events,
-                createOnEditCallback(), createOnDeleteCallback(), createOnRemindCallback());
+                createOnEditCallback(), createOnDeleteCallback(), createOnProcessCallback());
         rvEvent.setAdapter(eventAdapter);
 
         EventRepository.getEventsBySessionId(getApplicationContext(), Utility.getSessionId(getApplicationContext()))
@@ -252,19 +252,37 @@ public class MainActivity extends AppCompatActivity {
         return new OnDeleteCallback() {
             @Override
             public void onDelete(Event event) {
-                if (alarmPendingIntents.containsKey(event.id)) {
-                    alarmPendingIntents.get(event.id).cancel();
-                    alarmPendingIntents.remove(event.id);
-                }
-                NotificationManagerCompat.from(getApplicationContext()).cancel(event.id.hashCode());
+                cancelAlarmAndNotification(event);
             }
         };
     }
 
-    private OnRemindCallback createOnRemindCallback() {
-        return new OnRemindCallback() {
+    private void cancelAlarmAndNotification(Event event) {
+        if (alarmPendingIntents.containsKey(event.id)) {
+            alarmPendingIntents.get(event.id).cancel();
+            alarmPendingIntents.remove(event.id);
+        }
+        NotificationManagerCompat.from(getApplicationContext()).cancel(event.id.hashCode());
+    }
+
+    private OnProcessCallback createOnProcessCallback() {
+        return new OnProcessCallback() {
             @Override
-            public void onRemind(Event event) {
+            public void onProcess(Event event) {
+                // Event is not started, do nothing
+                if (event.actualStart == null) return;
+
+                // Event is done, cancel alarm and notification
+                if (event.actualEnd != null) {
+                    cancelAlarmAndNotification(event);
+                    return;
+                }
+
+                long remindTime = event.plannedEnd.getTime() - Config.REMIND_BEFORE_PLANNED_END_IN_MILLISECONDS;
+
+                // Event is in progress, however, it is too late to remind, do nothing
+                if (remindTime < event.actualStart.getTime()) return;
+
                 AlarmManager alarmManager = (AlarmManager) getApplicationContext()
                         .getSystemService(Context.ALARM_SERVICE);
 
@@ -283,17 +301,11 @@ public class MainActivity extends AppCompatActivity {
                 alarmPendingIntents.put(event.id, alarmPendingIntent);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
-                            event.plannedEnd.getTime() - Config.REMIND_BEFORE_PLANNED_END_IN_MILLISECONDS,
-                            alarmPendingIntent);
+                    alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, remindTime, alarmPendingIntent);
                 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    alarmManager.setExact(AlarmManager.RTC_WAKEUP,
-                            event.plannedEnd.getTime() - Config.REMIND_BEFORE_PLANNED_END_IN_MILLISECONDS,
-                            alarmPendingIntent);
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, remindTime, alarmPendingIntent);
                 } else {
-                    alarmManager.set(AlarmManager.RTC_WAKEUP,
-                            event.plannedEnd.getTime() - Config.REMIND_BEFORE_PLANNED_END_IN_MILLISECONDS,
-                            alarmPendingIntent);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, remindTime, alarmPendingIntent);
                 }
             }
         };

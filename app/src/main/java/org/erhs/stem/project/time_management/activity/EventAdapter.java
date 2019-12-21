@@ -49,17 +49,17 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     private List<Event> events;
     private MainActivity.OnEditCallback onEditCallback;
     private MainActivity.OnDeleteCallback onDeleteCallback;
-    private MainActivity.OnRemindCallback onRemindCallback;
+    private MainActivity.OnProcessCallback onProcessCallback;
 
     public EventAdapter(Resources resources, List<Event> events,
                         MainActivity.OnEditCallback onEditCallback,
                         MainActivity.OnDeleteCallback onDeleteCallback,
-                        MainActivity.OnRemindCallback onRemindCallback) {
+                        MainActivity.OnProcessCallback onProcessCallback) {
         this.resources = resources;
         this.events = events;
         this.onEditCallback = onEditCallback;
         this.onDeleteCallback = onDeleteCallback;
-        this.onRemindCallback = onRemindCallback;
+        this.onProcessCallback = onProcessCallback;
     }
 
     @Override
@@ -115,12 +115,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             public void onClick(View v) {
                 if (event.actualStart == null) {
                     event.actualStart = new Date();
-                    if (event.actualStart.getTime() < event.plannedEnd.getTime() - Config.REMIND_BEFORE_PLANNED_END_IN_MILLISECONDS) {
-                        onRemindCallback.onRemind(event);
-                    }
                 } else if (event.actualEnd == null) {
                     event.actualEnd = new Date();
                 }
+                onProcessCallback.onProcess(event);
                 EventRepository.updateEvent(v.getContext(), event);
                 EventAdapter.this.notifyItemChanged(position);
             }
