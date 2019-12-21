@@ -1,8 +1,12 @@
 package org.erhs.stem.project.time_management.activity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -16,8 +20,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.erhs.stem.project.time_management.R;
+import org.erhs.stem.project.time_management.config.Config;
 import org.erhs.stem.project.time_management.domain.Event;
 import org.erhs.stem.project.time_management.domain.EventType;
+import org.erhs.stem.project.time_management.receiver.AlarmReceiver;
 import org.erhs.stem.project.time_management.service.EventRepository;
 
 import java.util.ArrayList;
@@ -31,8 +37,13 @@ public class MainActivity extends AppCompatActivity {
         void onEdit(Event event);
     }
 
+    interface OnRemindCallback {
+        void onRemind(Event event);
+    }
+
     private static final int REQUEST_CODE_ADD = 1;
     private static final int REQUEST_CODE_MODIFY = 2;
+    private static final int REQUEST_CODE_REMIND = 3;
 
     private static final String EMPTY = "";
 
@@ -103,7 +114,19 @@ public class MainActivity extends AppCompatActivity {
                     public void onEdit(Event event) {
                         startEventEditingActivity(event, REQUEST_CODE_MODIFY);
                     }
-                });
+                }, new OnRemindCallback() {
+                    @Override
+                    public void onRemind(Event event) {
+                        AlarmManager alarmManager = (AlarmManager) getApplicationContext()
+                                .getSystemService(Context.ALARM_SERVICE);
+                        Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+                        PendingIntent alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), REQUEST_CODE_REMIND,
+                                intent, 0);
+                        alarmManager.set(AlarmManager.RTC_WAKEUP,
+                                event.plannedEnd.getTime() - Config.REMIND_BEFORE_MILLISECONDS,
+                                alarmIntent);
+                    }
+        });
         rvEvent.setAdapter(eventAdapter);
 
         EventRepository.getEventsBySessionId(getApplicationContext(), getSessionId())
@@ -143,10 +166,12 @@ public class MainActivity extends AppCompatActivity {
                     Date plannedStart = new Date();
                     plannedStart.setHours(plannedStartHour);
                     plannedStart.setMinutes(plannedStartMinute);
+                    plannedStart.setSeconds(0);
 
                     Date plannedEnd = new Date();
                     plannedEnd.setHours(plannedEndHour);
                     plannedEnd.setMinutes(plannedEndMinute);
+                    plannedEnd.setSeconds(0);
 
                     Event event = Event.createEvent(getSessionId(), eventType, description,
                             plannedStart, plannedEnd);
@@ -175,8 +200,10 @@ public class MainActivity extends AppCompatActivity {
                         event.description = description;
                         event.plannedStart.setHours(plannedStartHour);
                         event.plannedStart.setMinutes(plannedStartMinute);
+                        event.plannedStart.setSeconds(0);
                         event.plannedEnd.setHours(plannedEndHour);
                         event.plannedEnd.setMinutes(plannedEndMinute);
+                        event.plannedEnd.setSeconds(0);
                         EventRepository.updateEvent(getApplicationContext(), event);
                         eventAdapter.notifyItemChanged(fromPos);
                         int toPos;

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.erhs.stem.project.time_management.R;
+import org.erhs.stem.project.time_management.config.Config;
 import org.erhs.stem.project.time_management.domain.Event;
 import org.erhs.stem.project.time_management.domain.EventType;
 import org.erhs.stem.project.time_management.service.EventRepository;
@@ -47,12 +48,15 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     private Resources resources;
     private List<Event> events;
     private MainActivity.OnEditCallback onEditCallback;
+    private MainActivity.OnRemindCallback onRemindCallback;
 
     public EventAdapter(Resources resources, List<Event> events,
-                        MainActivity.OnEditCallback onEditCallback) {
+                        MainActivity.OnEditCallback onEditCallback,
+                        MainActivity.OnRemindCallback onRemindCallback) {
         this.resources = resources;
         this.events = events;
         this.onEditCallback = onEditCallback;
+        this.onRemindCallback = onRemindCallback;
     }
 
     @Override
@@ -107,6 +111,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             public void onClick(View v) {
                 if (event.actualStart == null) {
                     event.actualStart = new Date();
+                    if (event.actualStart.getTime() < event.plannedEnd.getTime() - Config.REMIND_BEFORE_MILLISECONDS) {
+                        onRemindCallback.onRemind(event);
+                    }
                 } else if (event.actualEnd == null) {
                     event.actualEnd = new Date();
                 }
