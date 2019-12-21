@@ -31,5 +31,6 @@
     <string name="planned_start_minute">planned_start_minute</string>
     <string name="planned_end_hour">planned_end_hour</string>
     <string name="planned_end_minute">planned_end_minute</string>
+    <string name="session_id">session_id</string>
     <string name="event_id">event_id</string>
 </resources>

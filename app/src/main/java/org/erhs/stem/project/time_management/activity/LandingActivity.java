@@ -3,6 +3,7 @@ package org.erhs.stem.project.time_management.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 
@@ -63,5 +64,13 @@ public class LandingActivity extends AppCompatActivity {
             intent.setClass(LandingActivity.this, MainActivity.class);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

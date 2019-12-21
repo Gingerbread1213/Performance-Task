@@ -5,8 +5,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -14,13 +14,15 @@ import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.Observer;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.erhs.stem.project.time_management.R;
-import org.erhs.stem.project.time_management.config.Config;
+import org.erhs.stem.project.time_management.common.Config;
+import org.erhs.stem.project.time_management.common.Utility;
 import org.erhs.stem.project.time_management.domain.Event;
 import org.erhs.stem.project.time_management.domain.EventType;
 import org.erhs.stem.project.time_management.receiver.AlarmReceiver;
@@ -29,12 +31,18 @@ import org.erhs.stem.project.time_management.service.EventRepository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
     interface OnEditCallback {
         void onEdit(Event event);
+    }
+
+    interface OnDeleteCallback {
+        void onDelete(Event event);
     }
 
     interface OnRemindCallback {
@@ -43,9 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_ADD = 1;
     private static final int REQUEST_CODE_MODIFY = 2;
-    private static final int REQUEST_CODE_REMIND = 3;
 
-    private static final String EMPTY = "";
+    private Map<String, PendingIntent> alarmPendingIntents = new HashMap<>();
 
     private EventAdapter eventAdapter;
     private List<Event> events = new ArrayList<>();
@@ -84,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
         btnEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                NotificationManagerCompat.from(getApplicationContext()).cancelAll();
+
                 SharedPreferences preferences = PreferenceManager
                         .getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = preferences.edit();
@@ -100,8 +109,8 @@ public class MainActivity extends AppCompatActivity {
         ibAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startEventEditingActivity(Event.createDefaultEvent(getSessionId()),
-                        REQUEST_CODE_ADD);
+                startEventEditingActivity(Event.createDefaultEvent(
+                        Utility.getSessionId(getApplicationContext())), REQUEST_CODE_ADD);
             }
         });
 
@@ -109,27 +118,10 @@ public class MainActivity extends AppCompatActivity {
         rvEvent.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         eventAdapter = new EventAdapter(getApplicationContext().getResources(), events,
-                new OnEditCallback() {
-                    @Override
-                    public void onEdit(Event event) {
-                        startEventEditingActivity(event, REQUEST_CODE_MODIFY);
-                    }
-                }, new OnRemindCallback() {
-                    @Override
-                    public void onRemind(Event event) {
-                        AlarmManager alarmManager = (AlarmManager) getApplicationContext()
-                                .getSystemService(Context.ALARM_SERVICE);
-                        Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
-                        PendingIntent alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), REQUEST_CODE_REMIND,
-                                intent, 0);
-                        alarmManager.set(AlarmManager.RTC_WAKEUP,
-                                event.plannedEnd.getTime() - Config.REMIND_BEFORE_MILLISECONDS,
-                                alarmIntent);
-                    }
-        });
+                createOnEditCallback(), createOnDeleteCallback(), createOnRemindCallback());
         rvEvent.setAdapter(eventAdapter);
 
-        EventRepository.getEventsBySessionId(getApplicationContext(), getSessionId())
+        EventRepository.getEventsBySessionId(getApplicationContext(), Utility.getSessionId(getApplicationContext()))
                 .observe(this, new Observer<List<Event>>() {
                     @Override
                     public void onChanged(List<Event> events) {
@@ -155,8 +147,8 @@ public class MainActivity extends AppCompatActivity {
             if (bundle != null) {
                 String eventId = bundle.getString(getString(R.string.event_id));
                 EventType eventType = EventType.toEventType(
-                        bundle.getString(getString(R.string.event_type), EMPTY));
-                String description = bundle.getString(getString(R.string.description), EMPTY);
+                        bundle.getString(getString(R.string.event_type), Config.EMPTY));
+                String description = bundle.getString(getString(R.string.description), Config.EMPTY);
                 int plannedStartHour = bundle.getInt(getString(R.string.planned_start_hour), 0);
                 int plannedStartMinute = bundle.getInt(getString(R.string.planned_start_minute), 0);
                 int plannedEndHour = bundle.getInt(getString(R.string.planned_end_hour), 0);
@@ -173,8 +165,8 @@ public class MainActivity extends AppCompatActivity {
                     plannedEnd.setMinutes(plannedEndMinute);
                     plannedEnd.setSeconds(0);
 
-                    Event event = Event.createEvent(getSessionId(), eventType, description,
-                            plannedStart, plannedEnd);
+                    Event event = Event.createEvent(Utility.getSessionId(getApplicationContext()),
+                            eventType, description, plannedStart, plannedEnd);
 
                     int insertPos;
                     for (insertPos = 0; insertPos < events.size(); insertPos++) {
@@ -222,12 +214,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private String getSessionId() {
-        SharedPreferences preferences =
-                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        return preferences.getString(getString(R.string.started), EMPTY);
-    }
-
     private void startEventEditingActivity(Event event, int requestCode) {
         Intent intent = new Intent();
         Bundle bundle = new Bundle();
@@ -251,5 +237,65 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtras(bundle);
         intent.setClass(MainActivity.this, EventEditingActivity.class);
         startActivityForResult(intent, requestCode);
+    }
+
+    private OnEditCallback createOnEditCallback() {
+        return new OnEditCallback() {
+            @Override
+            public void onEdit(Event event) {
+                startEventEditingActivity(event, REQUEST_CODE_MODIFY);
+            }
+        };
+    }
+
+    private OnDeleteCallback createOnDeleteCallback() {
+        return new OnDeleteCallback() {
+            @Override
+            public void onDelete(Event event) {
+                if (alarmPendingIntents.containsKey(event.id)) {
+                    alarmPendingIntents.get(event.id).cancel();
+                    alarmPendingIntents.remove(event.id);
+                }
+                NotificationManagerCompat.from(getApplicationContext()).cancel(event.id.hashCode());
+            }
+        };
+    }
+
+    private OnRemindCallback createOnRemindCallback() {
+        return new OnRemindCallback() {
+            @Override
+            public void onRemind(Event event) {
+                AlarmManager alarmManager = (AlarmManager) getApplicationContext()
+                        .getSystemService(Context.ALARM_SERVICE);
+
+                Intent alarmIntent = new Intent(getApplicationContext(), AlarmReceiver.class);
+                Bundle bundle = new Bundle();
+                bundle.putString(getString(R.string.session_id), Utility.getSessionId(getApplicationContext()));
+                bundle.putString(getString(R.string.event_id), event.id);
+                bundle.putString(getString(R.string.event_type), EventType.fromEventType(event.type));
+                bundle.putString(getString(R.string.description), event.description);
+                alarmIntent.putExtras(bundle);
+
+                PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(
+                        getApplicationContext(), (int) System.currentTimeMillis(), alarmIntent,
+                        PendingIntent.FLAG_ONE_SHOT);
+
+                alarmPendingIntents.put(event.id, alarmPendingIntent);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
+                            event.plannedEnd.getTime() - Config.REMIND_BEFORE_PLANNED_END_IN_MILLISECONDS,
+                            alarmPendingIntent);
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP,
+                            event.plannedEnd.getTime() - Config.REMIND_BEFORE_PLANNED_END_IN_MILLISECONDS,
+                            alarmPendingIntent);
+                } else {
+                    alarmManager.set(AlarmManager.RTC_WAKEUP,
+                            event.plannedEnd.getTime() - Config.REMIND_BEFORE_PLANNED_END_IN_MILLISECONDS,
+                            alarmPendingIntent);
+                }
+            }
+        };
     }
 }
