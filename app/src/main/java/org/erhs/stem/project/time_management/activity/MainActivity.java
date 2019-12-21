@@ -257,14 +257,6 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
-    private void cancelAlarmAndNotification(Event event) {
-        if (alarmPendingIntents.containsKey(event.id)) {
-            alarmPendingIntents.get(event.id).cancel();
-            alarmPendingIntents.remove(event.id);
-        }
-        NotificationManagerCompat.from(getApplicationContext()).cancel(event.id.hashCode());
-    }
-
     private OnProcessCallback createOnProcessCallback() {
         return new OnProcessCallback() {
             @Override
@@ -309,5 +301,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
+    }
+
+    private void cancelAlarmAndNotification(Event event) {
+        if (alarmPendingIntents.containsKey(event.id)) {
+            alarmPendingIntents.get(event.id).cancel();
+            alarmPendingIntents.remove(event.id);
+        }
+        NotificationManagerCompat.from(getApplicationContext()).cancel(event.id.hashCode());
     }
 }
