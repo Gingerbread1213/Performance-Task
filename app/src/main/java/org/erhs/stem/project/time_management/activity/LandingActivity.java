@@ -28,7 +28,7 @@ public class LandingActivity extends AppCompatActivity {
 
         ProcessLifecycleOwner.get().getLifecycle().addObserver(new LifecycleObserver() {
             @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-            public void onStart() {
+            public void onResume() {
                 ApplicationMonitor.getInstance().setNotificationEnabled(false);
             }
 
