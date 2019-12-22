@@ -8,9 +8,14 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
+import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.preference.PreferenceManager;
 
 import org.erhs.stem.project.time_management.R;
+import org.erhs.stem.project.time_management.service.ApplicationMonitor;
 
 import java.util.UUID;
 
@@ -20,6 +25,18 @@ public class LandingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
+
+        ProcessLifecycleOwner.get().getLifecycle().addObserver(new LifecycleObserver() {
+            @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+            public void onStart() {
+                ApplicationMonitor.getInstance().setNotificationEnabled(false);
+            }
+
+            @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+            public void onPause() {
+                ApplicationMonitor.getInstance().setNotificationEnabled(true);
+            }
+        });
 
         Button btnStart = findViewById(R.id.action_start);
         btnStart.setOnClickListener(new View.OnClickListener() {
