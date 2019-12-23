@@ -29,12 +29,12 @@ public class LandingActivity extends AppCompatActivity {
         ProcessLifecycleOwner.get().getLifecycle().addObserver(new LifecycleObserver() {
             @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
             public void onResume() {
-                ApplicationMonitor.getInstance().setNotificationEnabled(false);
+                ApplicationMonitor.getInstance(getApplicationContext()).setNotificationEnabled(false);
             }
 
             @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
             public void onPause() {
-                ApplicationMonitor.getInstance().setNotificationEnabled(true);
+                ApplicationMonitor.getInstance(getApplicationContext()).setNotificationEnabled(true);
             }
         });
 

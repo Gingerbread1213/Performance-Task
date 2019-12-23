@@ -91,6 +91,10 @@ public class MainActivity extends AppCompatActivity {
         btnEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                for (PendingIntent alarmPendingIntent : alarmPendingIntents.values()) {
+                    alarmPendingIntent.cancel();
+                }
+                alarmPendingIntents.clear();
                 NotificationManagerCompat.from(getApplicationContext()).cancelAll();
 
                 SharedPreferences preferences = PreferenceManager
@@ -146,9 +150,8 @@ public class MainActivity extends AppCompatActivity {
             Bundle bundle = resultIntent.getExtras();
             if (bundle != null) {
                 String eventId = bundle.getString(getString(R.string.event_id));
-                EventType eventType = EventType.toEventType(
-                        bundle.getString(getString(R.string.event_type), Config.EMPTY));
-                String description = bundle.getString(getString(R.string.description), Config.EMPTY);
+                EventType eventType = EventType.toEventType(bundle.getString(getString(R.string.event_type), getString(R.string.empty)));
+                String description = bundle.getString(getString(R.string.description), getString(R.string.empty));
                 int plannedStartHour = bundle.getInt(getString(R.string.planned_start_hour), 0);
                 int plannedStartMinute = bundle.getInt(getString(R.string.planned_start_minute), 0);
                 int plannedEndHour = bundle.getInt(getString(R.string.planned_end_hour), 0);

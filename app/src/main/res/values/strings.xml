@@ -22,6 +22,7 @@
     <string name="planned">Planned: </string>
     <string name="actual">Actual: </string>
     <string name="empty" />
+    <string name="channel_name">Time-shift Channel</string>
 
     <string name="started">started</string>
     <string name="edit_mode">edit_mode</string>
@@ -33,4 +34,5 @@
     <string name="planned_end_minute">planned_end_minute</string>
     <string name="session_id">session_id</string>
     <string name="event_id">event_id</string>
+    <string name="channel_id">channel_id</string>
 </resources>
