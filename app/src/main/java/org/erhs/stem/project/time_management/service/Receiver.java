@@ -1,0 +1,117 @@
+package org.erhs.stem.project.time_management.service;
+
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.os.SystemClock;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
+import org.erhs.stem.project.time_management.R;
+import org.erhs.stem.project.time_management.activity.MainActivity;
+import org.erhs.stem.project.time_management.common.Utility;
+import org.erhs.stem.project.time_management.domain.Event;
+
+public class Receiver extends BroadcastReceiver {
+
+    public enum Type {
+        REMIND,
+        SNOOZE,
+        ACTION
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        Type type = (Type) intent.getSerializableExtra(context.getString(R.string.receiver_type_serializable));
+        Event event = (Event) intent.getSerializableExtra(context.getString(R.string.event_serializable));
+
+        // If event's session id is not matched with current session, do not send notification
+        if (!Utility.getSessionId(context).equals(event.sessionId)) return;
+
+        switch (type) {
+            case REMIND:
+                if (ApplicationMonitor.getInstance(context).isNotificationEnabled()) {
+                    int notificationId = event.id.hashCode();
+
+                    Intent notifyIntent = new Intent(context, MainActivity.class);
+                    notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    PendingIntent notifyPendingIntent = PendingIntent.getActivity(context,
+                            (int) System.currentTimeMillis(), notifyIntent, PendingIntent.FLAG_ONE_SHOT);
+
+                    Intent snoozeIntent = new Intent(context, Receiver.class);
+                    snoozeIntent.putExtra(context.getString(R.string.receiver_type_serializable), Type.SNOOZE);
+                    snoozeIntent.putExtra(context.getString(R.string.event_serializable), event);
+                    PendingIntent snoozePendingIntent = PendingIntent.getBroadcast(context,
+                            (int) System.currentTimeMillis(), snoozeIntent, PendingIntent.FLAG_ONE_SHOT);
+
+                    Intent actionIntent = new Intent(context, Receiver.class);
+                    snoozeIntent.putExtra(context.getString(R.string.receiver_type_serializable), Type.ACTION);
+                    snoozeIntent.putExtra(context.getString(R.string.event_serializable), event);
+                    PendingIntent actionPendingIntent = PendingIntent.getBroadcast(context,
+                            (int) System.currentTimeMillis(), actionIntent, PendingIntent.FLAG_ONE_SHOT);
+
+                    NotificationCompat.Builder builder = new NotificationCompat
+                            .Builder(context, context.getString(R.string.channel_id))
+                            .setSmallIcon(R.drawable.logo_icon)
+                            .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), Utility.getEventImageId(event.type)))
+                            .setContentTitle("Time is up")
+                            .setContentText(event.description)
+                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                            .setContentIntent(notifyPendingIntent)
+                            .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE)
+                            .addAction(0, context.getString(R.string.snooze), snoozePendingIntent)
+                            .addAction(0, context.getString(R.string.action), actionPendingIntent)
+                            .setAutoCancel(true);
+
+                    NotificationManagerCompat.from(context).notify(notificationId, builder.build());
+                } else {
+                }
+                break;
+            case SNOOZE:
+                // remove previous notification
+                // set alarm
+                break;
+            case ACTION:
+                // remove previous notification
+                // set action
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    private PendingIntent createSnoozePendingIntent(Context context) {
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        Intent snoozeIntent = new Intent(context, Receiver.class);
+        //snoozeIntent.setAction(ACTION_SNOOZE);
+        //snoozeIntent.putExtra(EXTRA_NOTIFICATION_ID, 0);
+        PendingIntent snoozePendingIntent = PendingIntent.getBroadcast(context,
+                (int) System.currentTimeMillis(), snoozeIntent, PendingIntent.FLAG_ONE_SHOT);
+
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                SystemClock.elapsedRealtime() +
+                        60 * 1000, snoozePendingIntent);
+
+        return snoozePendingIntent;
+    }
+
+    private PendingIntent createActionPendingIntent(Context context) {
+        Intent actionIntent = new Intent(context, Receiver.class);
+
+        PendingIntent actionPendingIntent = PendingIntent.getBroadcast(context,
+                (int) System.currentTimeMillis(), actionIntent, PendingIntent.FLAG_ONE_SHOT);
+
+
+        //EventRepository.updateEvent(context, null);
+        //int notificationId = eventId.hashCode();
+        //NotificationManagerCompat.from(getApplicationContext()).cancel(event.id.hashCode());
+        return actionPendingIntent;
+    }
+}

@@ -1,11 +1,18 @@
 package org.erhs.stem.project.time_management.common;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 
 import androidx.preference.PreferenceManager;
 
 import org.erhs.stem.project.time_management.R;
+import org.erhs.stem.project.time_management.domain.Event;
 import org.erhs.stem.project.time_management.domain.EventType;
+import org.erhs.stem.project.time_management.service.Receiver;
+import org.erhs.stem.project.time_management.service.ApplicationMonitor;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -36,5 +43,26 @@ public abstract class Utility {
 
     public static int getEventImageId(EventType eventType) {
         return EVENT_IMAGES.get(eventType);
+    }
+
+    public static void alarm(Context context, Event event, long remindTime) {
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        Intent alarmIntent = new Intent(context, Receiver.class);
+        alarmIntent.putExtra(context.getString(R.string.receiver_type_serializable), Receiver.Type.REMIND);
+        alarmIntent.putExtra(context.getString(R.string.event_serializable), event);
+
+        PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(context, event.id.hashCode(),
+                alarmIntent, PendingIntent.FLAG_ONE_SHOT);
+
+        ApplicationMonitor.getInstance(context).getAlarmRepository().addAlarm(event.id, alarmPendingIntent);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, remindTime, alarmPendingIntent);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, remindTime, alarmPendingIntent);
+        } else {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, remindTime, alarmPendingIntent);
+        }
     }
 }

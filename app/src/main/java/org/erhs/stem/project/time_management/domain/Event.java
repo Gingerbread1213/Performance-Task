@@ -6,12 +6,13 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
 @Entity(tableName = "events")
 @TypeConverters({EventType.class, Event.DateConverter.class})
-public class Event {
+public class Event implements Serializable {
 
     @PrimaryKey
     @NonNull

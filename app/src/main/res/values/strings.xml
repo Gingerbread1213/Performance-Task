@@ -23,6 +23,8 @@
     <string name="actual">Actual: </string>
     <string name="empty" />
     <string name="channel_name">Time-shift Channel</string>
+    <string name="snooze">Snooze</string>
+    <string name="action">Action</string>
 
     <string name="started">started</string>
     <string name="edit_mode">edit_mode</string>
@@ -35,4 +37,6 @@
     <string name="session_id">session_id</string>
     <string name="event_id">event_id</string>
     <string name="channel_id">channel_id</string>
+    <string name="receiver_type_serializable">receiver_type_serializable</string>
+    <string name="event_serializable">event_serializable</string>
 </resources>

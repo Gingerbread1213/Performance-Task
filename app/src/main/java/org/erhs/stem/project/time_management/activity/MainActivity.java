@@ -1,11 +1,7 @@
 package org.erhs.stem.project.time_management.activity;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -25,15 +21,13 @@ import org.erhs.stem.project.time_management.common.Config;
 import org.erhs.stem.project.time_management.common.Utility;
 import org.erhs.stem.project.time_management.domain.Event;
 import org.erhs.stem.project.time_management.domain.EventType;
-import org.erhs.stem.project.time_management.receiver.AlarmReceiver;
+import org.erhs.stem.project.time_management.service.ApplicationMonitor;
 import org.erhs.stem.project.time_management.service.EventRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_ADD = 1;
     private static final int REQUEST_CODE_MODIFY = 2;
-
-    private Map<String, PendingIntent> alarmPendingIntents = new HashMap<>();
 
     private EventAdapter eventAdapter;
     private List<Event> events = new ArrayList<>();
@@ -91,10 +83,7 @@ public class MainActivity extends AppCompatActivity {
         btnEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (PendingIntent alarmPendingIntent : alarmPendingIntents.values()) {
-                    alarmPendingIntent.cancel();
-                }
-                alarmPendingIntents.clear();
+                ApplicationMonitor.getInstance(getApplicationContext()).getAlarmRepository().cancelAll();
                 NotificationManagerCompat.from(getApplicationContext()).cancelAll();
 
                 SharedPreferences preferences = PreferenceManager
@@ -211,6 +200,8 @@ public class MainActivity extends AppCompatActivity {
                         Collections.swap(events, fromPos, toPos);
                         eventAdapter.notifyItemMoved(fromPos, toPos);
                         rvEvent.smoothScrollToPosition(toPos);
+
+                        //TODO reset notification
                     }
                 }
             }
@@ -255,7 +246,8 @@ public class MainActivity extends AppCompatActivity {
         return new OnDeleteCallback() {
             @Override
             public void onDelete(Event event) {
-                cancelAlarmAndNotification(event);
+                ApplicationMonitor.getInstance(getApplicationContext()).getAlarmRepository().cancel(event.id);
+                NotificationManagerCompat.from(getApplicationContext()).cancel(event.id.hashCode());
             }
         };
     }
@@ -269,7 +261,8 @@ public class MainActivity extends AppCompatActivity {
 
                 // Event is done, cancel alarm and notification
                 if (event.actualEnd != null) {
-                    cancelAlarmAndNotification(event);
+                    ApplicationMonitor.getInstance(getApplicationContext()).getAlarmRepository().cancel(event.id);
+                    NotificationManagerCompat.from(getApplicationContext()).cancel(event.id.hashCode());
                     return;
                 }
 
@@ -278,39 +271,8 @@ public class MainActivity extends AppCompatActivity {
                 // Event is in progress, however, it is too late to remind, do nothing
                 if (remindTime < event.actualStart.getTime()) return;
 
-                AlarmManager alarmManager = (AlarmManager) getApplicationContext()
-                        .getSystemService(Context.ALARM_SERVICE);
-
-                Intent alarmIntent = new Intent(getApplicationContext(), AlarmReceiver.class);
-                Bundle bundle = new Bundle();
-                bundle.putString(getString(R.string.session_id), Utility.getSessionId(getApplicationContext()));
-                bundle.putString(getString(R.string.event_id), event.id);
-                bundle.putString(getString(R.string.event_type), EventType.fromEventType(event.type));
-                bundle.putString(getString(R.string.description), event.description);
-                alarmIntent.putExtras(bundle);
-
-                PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(
-                        getApplicationContext(), (int) System.currentTimeMillis(), alarmIntent,
-                        PendingIntent.FLAG_ONE_SHOT);
-
-                alarmPendingIntents.put(event.id, alarmPendingIntent);
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, remindTime, alarmPendingIntent);
-                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, remindTime, alarmPendingIntent);
-                } else {
-                    alarmManager.set(AlarmManager.RTC_WAKEUP, remindTime, alarmPendingIntent);
-                }
+                Utility.alarm(getApplicationContext(), event, remindTime);
             }
         };
-    }
-
-    private void cancelAlarmAndNotification(Event event) {
-        if (alarmPendingIntents.containsKey(event.id)) {
-            alarmPendingIntents.get(event.id).cancel();
-            alarmPendingIntents.remove(event.id);
-        }
-        NotificationManagerCompat.from(getApplicationContext()).cancel(event.id.hashCode());
     }
 }

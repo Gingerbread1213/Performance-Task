@@ -27,7 +27,7 @@
         <activity
             android:name=".activity.EventEditingActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <receiver android:name=".receiver.AlarmReceiver"/>
+        <receiver android:name=".service.Receiver"/>
     </application>
 
 </manifest>
