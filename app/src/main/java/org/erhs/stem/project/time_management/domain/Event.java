@@ -47,7 +47,13 @@ public class Event implements Serializable {
     }
 
     public static Event createDefaultEvent(String sessionId) {
-        return createEvent(sessionId, EventType.DINING, "", new Date(), new Date());
+        Date plannedStart = new Date();
+        plannedStart.setSeconds(0);
+
+        Date plannedEnd = new Date();
+        plannedEnd.setSeconds(0);
+
+        return createEvent(sessionId, EventType.DINING, "", plannedStart, plannedEnd);
     }
 
     public static class DateConverter {

@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import org.erhs.stem.project.time_management.R;
+import org.erhs.stem.project.time_management.domain.Event;
 import org.erhs.stem.project.time_management.domain.EventType;
 
 import java.text.SimpleDateFormat;
@@ -51,27 +52,18 @@ public class EventEditingActivity extends AppCompatActivity {
         plannedStart = findViewById(R.id.planned_start);
         plannedEnd = findViewById(R.id.planned_end);
 
-        plannedStartTime = new Date();
-        plannedEndTime = new Date();
-
         eventType.setAdapter(adapter);
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            eventType.setSelection(adapter.getPosition(
-                    EventType.toEventType(bundle.getString(getString(R.string.event_type)))));
+        Event event = (Event) getIntent().getSerializableExtra(getString(R.string.event_serializable));
 
-            description.setText(bundle.getString(getString(R.string.description)));
+        eventType.setSelection(adapter.getPosition(event.type));
+        description.setText(event.description);
 
-            plannedStartTime.setHours(bundle.getInt(getString(R.string.planned_start_hour)));
-            plannedStartTime.setMinutes(bundle.getInt(getString(R.string.planned_end_minute)));
+        plannedStartTime = new Date(event.plannedStart.getTime());
+        plannedEndTime = new Date(event.plannedEnd.getTime());
 
-            plannedEndTime.setHours(bundle.getInt(getString(R.string.planned_end_hour)));
-            plannedEndTime.setMinutes(bundle.getInt(getString(R.string.planned_end_minute)));
-
-            plannedStart.setText(TIME_FORMATTER.format(plannedStartTime));
-            plannedEnd.setText(TIME_FORMATTER.format(plannedEndTime));
-        }
+        plannedStart.setText(TIME_FORMATTER.format(plannedStartTime));
+        plannedEnd.setText(TIME_FORMATTER.format(plannedEndTime));
 
         plannedStart.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -129,32 +121,18 @@ public class EventEditingActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent = new Intent();
-        Bundle bundle = new Bundle();
-
         switch (item.getItemId()) {
             case android.R.id.home:
                 setResult(Activity.RESULT_CANCELED, intent);
                 finish();
                 return true;
             case R.id.action_edit_done:
-                Bundle origin = getIntent().getExtras();
-                if (origin != null) {
-                    bundle.putString(getString(R.string.event_id),
-                            origin.getString(getString(R.string.event_id), ""));
-                }
-                bundle.putString(getString(R.string.event_type),
-                        EventType.fromEventType((EventType) eventType.getSelectedItem()));
-                bundle.putString(getString(R.string.description),
-                        description.getText().toString());
-                bundle.putInt(getString(R.string.planned_start_hour),
-                        plannedStartTime.getHours());
-                bundle.putInt(getString(R.string.planned_start_minute),
-                        plannedStartTime.getMinutes());
-                bundle.putInt(getString(R.string.planned_end_hour),
-                        plannedEndTime.getHours());
-                bundle.putInt(getString(R.string.planned_end_minute),
-                        plannedEndTime.getMinutes());
-                intent.putExtras(bundle);
+                Event event = (Event) getIntent().getSerializableExtra(getString(R.string.event_serializable));
+                event.type = (EventType) eventType.getSelectedItem();
+                event.description = description.getText().toString();
+                event.plannedStart = new Date(plannedStartTime.getTime());
+                event.plannedEnd = new Date(plannedEndTime.getTime());
+                intent.putExtra(getString(R.string.event_serializable), event);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
                 return true;

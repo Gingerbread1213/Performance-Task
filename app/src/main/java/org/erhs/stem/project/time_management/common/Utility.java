@@ -46,6 +46,8 @@ public abstract class Utility {
     }
 
     public static void alarm(Context context, Event event, long remindTime) {
+        if (remindTime < event.actualStart.getTime()) return;
+
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         Intent alarmIntent = new Intent(context, Receiver.class);

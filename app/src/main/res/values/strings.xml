@@ -27,15 +27,6 @@
     <string name="action">Action</string>
 
     <string name="started">started</string>
-    <string name="edit_mode">edit_mode</string>
-    <string name="mode_add">mode_add</string>
-    <string name="mode_modify">mode_modify</string>
-    <string name="planned_start_hour">planned_start_hour</string>
-    <string name="planned_start_minute">planned_start_minute</string>
-    <string name="planned_end_hour">planned_end_hour</string>
-    <string name="planned_end_minute">planned_end_minute</string>
-    <string name="session_id">session_id</string>
-    <string name="event_id">event_id</string>
     <string name="channel_id">channel_id</string>
     <string name="receiver_type_serializable">receiver_type_serializable</string>
     <string name="event_serializable">event_serializable</string>
