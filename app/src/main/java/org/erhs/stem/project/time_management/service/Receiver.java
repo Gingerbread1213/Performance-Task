@@ -63,7 +63,7 @@ public class Receiver extends BroadcastReceiver {
                             .setContentText(event.description)
                             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                             .setContentIntent(notifyPendingIntent)
-                            .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE)
+                            .setDefaults(Notification.DEFAULT_ALL)
                             .addAction(0, context.getString(R.string.snooze), snoozePendingIntent)
                             .addAction(0, context.getString(R.string.action), actionPendingIntent)
                             .setAutoCancel(true);
