@@ -1,21 +1,22 @@
 package org.erhs.stem.project.time_management.service;
 
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.os.SystemClock;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import org.erhs.stem.project.time_management.R;
 import org.erhs.stem.project.time_management.activity.MainActivity;
+import org.erhs.stem.project.time_management.common.Config;
 import org.erhs.stem.project.time_management.common.Utility;
 import org.erhs.stem.project.time_management.domain.Event;
+
+import java.util.Date;
 
 public class Receiver extends BroadcastReceiver {
 
@@ -50,8 +51,8 @@ public class Receiver extends BroadcastReceiver {
                             (int) System.currentTimeMillis(), snoozeIntent, PendingIntent.FLAG_ONE_SHOT);
 
                     Intent actionIntent = new Intent(context, Receiver.class);
-                    snoozeIntent.putExtra(context.getString(R.string.receiver_type_serializable), Type.ACTION);
-                    snoozeIntent.putExtra(context.getString(R.string.event_serializable), event);
+                    actionIntent.putExtra(context.getString(R.string.receiver_type_serializable), Type.ACTION);
+                    actionIntent.putExtra(context.getString(R.string.event_serializable), event);
                     PendingIntent actionPendingIntent = PendingIntent.getBroadcast(context,
                             (int) System.currentTimeMillis(), actionIntent, PendingIntent.FLAG_ONE_SHOT);
 
@@ -70,48 +71,20 @@ public class Receiver extends BroadcastReceiver {
 
                     NotificationManagerCompat.from(context).notify(notificationId, builder.build());
                 } else {
+                    // Pop up a dialog
                 }
                 break;
             case SNOOZE:
-                // remove previous notification
-                // set alarm
+                NotificationManagerCompat.from(context).cancel(event.id.hashCode());
+                Utility.alarm(context, event, System.currentTimeMillis() + Config.SNOOZE_IN_MILLISECONDS);
                 break;
             case ACTION:
-                // remove previous notification
-                // set action
+                NotificationManagerCompat.from(context).cancel(event.id.hashCode());
+                event.actualEnd = new Date(System.currentTimeMillis());
+                EventRepository.updateEvent(context, event);
                 break;
             default:
                 break;
         }
-
-    }
-
-    private PendingIntent createSnoozePendingIntent(Context context) {
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-        Intent snoozeIntent = new Intent(context, Receiver.class);
-        //snoozeIntent.setAction(ACTION_SNOOZE);
-        //snoozeIntent.putExtra(EXTRA_NOTIFICATION_ID, 0);
-        PendingIntent snoozePendingIntent = PendingIntent.getBroadcast(context,
-                (int) System.currentTimeMillis(), snoozeIntent, PendingIntent.FLAG_ONE_SHOT);
-
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() +
-                        60 * 1000, snoozePendingIntent);
-
-        return snoozePendingIntent;
-    }
-
-    private PendingIntent createActionPendingIntent(Context context) {
-        Intent actionIntent = new Intent(context, Receiver.class);
-
-        PendingIntent actionPendingIntent = PendingIntent.getBroadcast(context,
-                (int) System.currentTimeMillis(), actionIntent, PendingIntent.FLAG_ONE_SHOT);
-
-
-        //EventRepository.updateEvent(context, null);
-        //int notificationId = eventId.hashCode();
-        //NotificationManagerCompat.from(getApplicationContext()).cancel(event.id.hashCode());
-        return actionPendingIntent;
     }
 }
