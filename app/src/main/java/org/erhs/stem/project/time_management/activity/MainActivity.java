@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.erhs.stem.project.time_management.R;
-import org.erhs.stem.project.time_management.common.Config;
 import org.erhs.stem.project.time_management.common.Utility;
 import org.erhs.stem.project.time_management.domain.Event;
 import org.erhs.stem.project.time_management.service.ApplicationMonitor;
@@ -175,8 +174,11 @@ public class MainActivity extends AppCompatActivity {
                         ApplicationMonitor.getInstance(getApplicationContext()).getAlarmRepository().cancel(event.id);
                         NotificationManagerCompat.from(getApplicationContext()).cancel(event.id.hashCode());
 
-                        Utility.alarm(getApplicationContext(), event,
-                                event.plannedEnd.getTime() - Config.REMIND_BEFORE_PLANNED_END_IN_MILLISECONDS);
+                        int remindBeforePlannedEndInMilliseconds = Utility
+                                .getRemindBeforePlannedEndInMilliseconds(getApplicationContext());
+                        if (remindBeforePlannedEndInMilliseconds >= 0) {
+                            Utility.alarm(getApplicationContext(), event, event.plannedEnd.getTime() - remindBeforePlannedEndInMilliseconds);
+                        }
                     }
                 }
             }
@@ -223,8 +225,11 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
-                Utility.alarm(getApplicationContext(), event,
-                        event.plannedEnd.getTime() - Config.REMIND_BEFORE_PLANNED_END_IN_MILLISECONDS);
+                int remindBeforePlannedEndInMilliseconds = Utility
+                        .getRemindBeforePlannedEndInMilliseconds(getApplicationContext());
+                if (remindBeforePlannedEndInMilliseconds >= 0) {
+                    Utility.alarm(getApplicationContext(), event, event.plannedEnd.getTime());
+                }
             }
         };
     }

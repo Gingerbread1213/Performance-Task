@@ -1,9 +1,14 @@
 <androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <SeekBarPreference
-        app:key="sounds"
-        app:title="Sounds" />
+    <ListPreference
+        android:key="@string/reminder_key"
+        android:title="@string/reminder_title"
+        android:entries="@array/reminder_entries"
+        android:entryValues="@array/reminder_entry_values"
+        android:defaultValue="@string/reminder_default_value"
+        android:summary="@string/reminder_summary"
+        android:dialogTitle="@string/reminder_dialog_title"/>
 
     <SwitchPreferenceCompat
         app:key="notifications"

@@ -19,6 +19,8 @@ import java.util.Map;
 
 public abstract class Utility {
 
+    private static int MINUTE_IN_MILLISECONDS = 60000;
+
     private static final Map<EventType, Integer> EVENT_IMAGES = new EnumMap(EventType.class);
     static {
         EVENT_IMAGES.put(EventType.DINING, R.drawable.ic_restaurant_black_24dp);
@@ -43,6 +45,16 @@ public abstract class Utility {
 
     public static int getEventImageId(EventType eventType) {
         return EVENT_IMAGES.get(eventType);
+    }
+
+    public static int getRemindBeforePlannedEndInMilliseconds(Context context) {
+        try {
+            String reminderEntryValue = PreferenceManager.getDefaultSharedPreferences(context)
+                    .getString(context.getString(R.string.reminder_key), null);
+            return Integer.parseInt(reminderEntryValue) * MINUTE_IN_MILLISECONDS;
+        } catch (NumberFormatException e) {
+            return -1;
+        }
     }
 
     public static void alarm(Context context, Event event, long remindTime) {

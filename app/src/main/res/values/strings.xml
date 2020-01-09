@@ -25,9 +25,29 @@
     <string name="channel_name">Time-shift Channel</string>
     <string name="snooze">Snooze</string>
     <string name="action">Action</string>
+    <string name="reminder_title">Reminder</string>
+    <string name="reminder_summary">Prevent from missing any deadline.</string>
+    <string name="reminder_dialog_title">Remind Me</string>
+    <string name="reminder_default_value">5</string>
+
+    <string-array name="reminder_entries">
+        <item>5 minutes before</item>
+        <item>1 minute before</item>
+        <item>At scheduled finish time</item>
+        <item>Never</item>
+    </string-array>
+
+    <string-array name="reminder_entry_values">
+        <item>5</item>
+        <item>1</item>
+        <item>0</item>
+        <item>None</item>
+    </string-array>
 
     <string name="started">started</string>
     <string name="channel_id">channel_id</string>
     <string name="receiver_type_serializable">receiver_type_serializable</string>
     <string name="event_serializable">event_serializable</string>
+    <string name="reminder_key">reminder_key</string>
+
 </resources>
