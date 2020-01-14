@@ -10,6 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize">
 
+
+
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/action_statistics"
             android:layout_width="wrap_content"
@@ -17,11 +19,13 @@
             android:layout_gravity="start"
             android:src="@drawable/ic_show_chart_black_24dp"/>
 
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
             android:layout_gravity="center"/>
+
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/action_settings"
@@ -33,6 +37,7 @@
             android:src="@drawable/ic_settings_black_24dp"/>
 
     </androidx.appcompat.widget.Toolbar>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_event"

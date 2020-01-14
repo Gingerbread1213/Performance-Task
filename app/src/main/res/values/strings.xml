@@ -51,11 +51,17 @@
     <string-array name="theme_entries">
         <item>Day</item>
         <item>Night</item>
+        <item>fresh</item>
+        <item>sky</item>
+        <item>warm</item>
     </string-array>
 
     <string-array name="theme_entry_values">
         <item>theme_1</item>
         <item>theme_2</item>
+        <item>theme_3</item>
+        <item>theme_4</item>
+        <item>theme_5</item>
     </string-array>
 
     <string name="started">started</string>
@@ -66,4 +72,7 @@
     <string name="theme_key">theme_key</string>
     <string name="theme_1">theme_1</string>
     <string name="theme_2">theme_2</string>
+    <string name="theme_3">theme_3</string>
+    <string name="theme_4">theme_4</string>
+    <string name="theme_5">theme_5</string>
 </resources>

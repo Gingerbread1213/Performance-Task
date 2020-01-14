@@ -82,12 +82,20 @@ public abstract class Utility {
     }
 
     public static void setTheme(Context context, Activity activity) {
-       String theme = PreferenceManager.getDefaultSharedPreferences(context)
+        String theme = PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(context.getString(R.string.theme_key), context.getString(R.string.theme_default_value));
-       if (context.getString(R.string.theme_1).equals(theme)) {
-           activity.setTheme(R.style.AppTheme);
-       } else if (context.getString(R.string.theme_2).equals(theme)) {
-           activity.setTheme(R.style.AppThemeAlt);
-       }
-    }
-}
+        if (context.getString(R.string.theme_1).equals(theme)) {
+            activity.setTheme(R.style.AppTheme);
+        } else if (context.getString(R.string.theme_2).equals(theme)) {
+            activity.setTheme(R.style.AppThemeAlt);
+        }
+        else if (context.getString(R.string.theme_3).equals(theme)) {
+            activity.setTheme(R.style.AppThemeFresh);
+        }
+        else if (context.getString(R.string.theme_4).equals(theme)) {
+            activity.setTheme(R.style.AppThemeSky);
+        }
+        else if (context.getString(R.string.theme_5).equals(theme)) {
+            activity.setTheme(R.style.AppThemeWarm);
+        }
+    }}
