@@ -19,6 +19,7 @@
         <item name="colorPrimaryDark">#545454</item>
         <item name="colorAccent">#ffd500</item>
         <item name="android:windowBackground">#545451</item>
+        <item name="android:textColor">#ffd500</item>
 
     </style>
 

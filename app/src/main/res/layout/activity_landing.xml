@@ -1,57 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:theme="@style/Theme.AppCompat.Light.NoActionBar"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_title" />
+
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="440dp"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="32sp"
-            android:textStyle="bold|italic"
-            android:text="@string/welcome"/>
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="0dp"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:layout_gravity="center"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="481dp"
+                android:orientation="vertical"></LinearLayout>
 
             <Button
                 android:id="@+id/action_start"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawableStart="@drawable/icon_start"
                 android:drawableLeft="@drawable/icon_start"
-                android:text="@string/action_start"
-                android:drawableStart="@drawable/icon_start"/>
+                android:text="@string/action_start" />
 
             <Button
                 android:id="@+id/action_statistics"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_statistic"
                 android:drawableLeft="@drawable/ic_statistic"
                 android:drawablePadding="8dp"
-                android:text="@string/action_statistics"
-                android:drawableStart="@drawable/ic_statistic"/>
+                android:text="@string/action_statistics" />
 
             <Button
                 android:id="@+id/action_about"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_about"
                 android:drawableLeft="@drawable/ic_about"
-                android:text="@string/action_about"
-                android:drawableStart="@drawable/ic_about"/>
+                android:text="@string/action_about" />
         </LinearLayout>
 
     </LinearLayout>
