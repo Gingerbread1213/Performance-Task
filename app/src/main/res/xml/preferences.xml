@@ -2,6 +2,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ListPreference
+        android:key="@string/theme_key"
+        android:title="@string/theme_title"
+        android:entries="@array/theme_entries"
+        android:entryValues="@array/theme_entry_values"
+        android:defaultValue="@string/theme_default_value"
+        android:summary="@string/theme_summary"
+        android:dialogTitle="@string/theme_dialog_title"/>
+
+    <ListPreference
         android:key="@string/reminder_key"
         android:title="@string/reminder_title"
         android:entries="@array/reminder_entries"
@@ -9,10 +18,6 @@
         android:defaultValue="@string/reminder_default_value"
         android:summary="@string/reminder_summary"
         android:dialogTitle="@string/reminder_dialog_title"/>
-
-    <SwitchPreferenceCompat
-        app:key="notifications"
-        app:title="Enable message notifications"/>
 
     <Preference
         app:key="about"

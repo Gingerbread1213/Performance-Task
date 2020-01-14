@@ -1,5 +1,6 @@
 package org.erhs.stem.project.time_management.common;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -78,5 +79,15 @@ public abstract class Utility {
         } else {
             alarmManager.set(AlarmManager.RTC_WAKEUP, remindTime, alarmPendingIntent);
         }
+    }
+
+    public static void setTheme(Context context, Activity activity) {
+       String theme = PreferenceManager.getDefaultSharedPreferences(context)
+                .getString(context.getString(R.string.theme_key), context.getString(R.string.theme_default_value));
+       if (context.getString(R.string.theme_1).equals(theme)) {
+           activity.setTheme(R.style.AppTheme);
+       } else if (context.getString(R.string.theme_2).equals(theme)) {
+           activity.setTheme(R.style.AppThemeAlt);
+       }
     }
 }
