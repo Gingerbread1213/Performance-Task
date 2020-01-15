@@ -18,7 +18,7 @@
         <item name="colorPrimary">#000000</item>
         <item name="colorPrimaryDark">#545454</item>
         <item name="colorAccent">#ffd500</item>
-        <item name="android:windowBackground">#545451</item>
+        <item name="android:colorBackground">#545451</item>
         <item name="android:textColor">#ffd500</item>
 
     </style>
@@ -28,7 +28,7 @@
         <item name="colorPrimary">#008214</item>
         <item name="colorPrimaryDark">#008214</item>
         <item name="colorAccent">#00945e</item>
-        <item name="android:windowBackground">#aafc83</item>
+        <item name="android:colorBackground">#aafc83</item>
 
 
     </style>
@@ -37,7 +37,7 @@
         <item name="colorPrimary">#7b55fa</item>
         <item name="colorPrimaryDark">#5cb0ff</item>
         <item name="colorAccent">#5cb0ff</item>
-        <item name="android:windowBackground">#5cb0ff</item>
+        <item name="android:colorBackground">#5cb0ff</item>
 
     </style>
     <style name="AppThemeWarm" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -45,7 +45,7 @@
         <item name="colorPrimary">#29286b</item>
         <item name="colorPrimaryDark">#29286b</item>
         <item name="colorAccent">#fffb7d</item>
-        <item name="android:windowBackground">#9aedea</item>
+        <item name="android:colorBackground">#9aedea</item>
 
     </style>
 
