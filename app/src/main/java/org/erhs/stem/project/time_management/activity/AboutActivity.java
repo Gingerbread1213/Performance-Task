@@ -12,7 +12,7 @@ public class AboutActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Utility.setTheme(getApplicationContext(), this, true);
+        Utility.setTheme(getApplicationContext(), this, false);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);

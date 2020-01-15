@@ -38,7 +38,7 @@ public class EventEditingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Utility.setTheme(getApplicationContext(), this, false);
+        Utility.setTheme(getApplicationContext(), this, true);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
