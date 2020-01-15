@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Utility.setTheme(getApplicationContext(), this, true);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar topBar = findViewById(R.id.top_bar);

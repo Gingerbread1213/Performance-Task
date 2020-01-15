@@ -1,52 +1,58 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="AppThemeDay" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/color_primary_day</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark_day</item>
+        <item name="colorAccent">@color/color_accent_day</item>
     </style>
-
-    <style name="AppTheme.NoActionBar">
+    <style name="AppThemeDay.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppThemeAlt" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">#000000</item>
-        <item name="colorPrimaryDark">#545454</item>
-        <item name="colorAccent">#ffd500</item>
-        <item name="android:colorBackground">#545451</item>
-        <item name="android:textColor">#ffd500</item>
-
+    <style name="AppThemeNight" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/color_primary_night</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark_night</item>
+        <item name="colorAccent">@color/color_accent_night</item>
+        <item name="android:textColor">@color/text_color_night</item>
+        <item name="android:windowBackground">@color/window_background_night</item>
+    </style>
+    <style name="AppThemeNight.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="AppThemeFresh" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">#008214</item>
-        <item name="colorPrimaryDark">#008214</item>
-        <item name="colorAccent">#00945e</item>
-        <item name="android:colorBackground">#aafc83</item>
-
-
+        <item name="colorPrimary">@color/color_primary_fresh</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark_fresh</item>
+        <item name="colorAccent">@color/color_accent_fresh</item>
+        <item name="android:windowBackground">@color/window_background_fresh</item>
     </style>
+    <style name="AppThemeFresh.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <style name="AppThemeSky" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">#7b55fa</item>
-        <item name="colorPrimaryDark">#5cb0ff</item>
-        <item name="colorAccent">#5cb0ff</item>
-        <item name="android:colorBackground">#5cb0ff</item>
-
+        <item name="colorPrimary">@color/color_primary_sky</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark_sky</item>
+        <item name="colorAccent">@color/color_accent_sky</item>
+        <item name="android:windowBackground">@color/window_background_sky</item>
     </style>
-    <style name="AppThemeWarm" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">#29286b</item>
-        <item name="colorPrimaryDark">#29286b</item>
-        <item name="colorAccent">#fffb7d</item>
-        <item name="android:colorBackground">#9aedea</item>
+    <style name="AppThemeSky.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 
+    <style name="AppThemeWarm" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/color_primary_warm</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark_warm</item>
+        <item name="colorAccent">@color/color_accent_warm</item>
+        <item name="android:windowBackground">@color/window_background_warm</item>
+    </style>
+    <style name="AppThemeWarm.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
 </resources>

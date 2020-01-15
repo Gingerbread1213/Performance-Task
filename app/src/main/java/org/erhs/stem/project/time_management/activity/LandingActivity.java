@@ -15,6 +15,7 @@ import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.preference.PreferenceManager;
 
 import org.erhs.stem.project.time_management.R;
+import org.erhs.stem.project.time_management.common.Utility;
 import org.erhs.stem.project.time_management.service.ApplicationMonitor;
 
 import java.util.UUID;
@@ -23,6 +24,8 @@ public class LandingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Utility.setTheme(getApplicationContext(), this, true);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
 

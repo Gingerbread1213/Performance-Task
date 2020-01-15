@@ -81,21 +81,19 @@ public abstract class Utility {
         }
     }
 
-    public static void setTheme(Context context, Activity activity) {
+    public static void setTheme(Context context, Activity activity, boolean noActionBar) {
         String theme = PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(context.getString(R.string.theme_key), context.getString(R.string.theme_default_value));
         if (context.getString(R.string.theme_1).equals(theme)) {
-            activity.setTheme(R.style.AppTheme);
+            activity.setTheme(noActionBar ? R.style.AppThemeDay_NoActionBar : R.style.AppThemeDay);
         } else if (context.getString(R.string.theme_2).equals(theme)) {
-            activity.setTheme(R.style.AppThemeAlt);
+            activity.setTheme(noActionBar ? R.style.AppThemeNight_NoActionBar : R.style.AppThemeNight);
+        } else if (context.getString(R.string.theme_3).equals(theme)) {
+            activity.setTheme(noActionBar ? R.style.AppThemeFresh_NoActionBar : R.style.AppThemeFresh);
+        } else if (context.getString(R.string.theme_4).equals(theme)) {
+            activity.setTheme(noActionBar ? R.style.AppThemeSky_NoActionBar : R.style.AppThemeSky);
+        } else if (context.getString(R.string.theme_5).equals(theme)) {
+            activity.setTheme(noActionBar ? R.style.AppThemeWarm_NoActionBar : R.style.AppThemeWarm);
         }
-        else if (context.getString(R.string.theme_3).equals(theme)) {
-            activity.setTheme(R.style.AppThemeFresh);
-        }
-        else if (context.getString(R.string.theme_4).equals(theme)) {
-            activity.setTheme(R.style.AppThemeSky);
-        }
-        else if (context.getString(R.string.theme_5).equals(theme)) {
-            activity.setTheme(R.style.AppThemeWarm);
-        }
-    }}
+    }
+}

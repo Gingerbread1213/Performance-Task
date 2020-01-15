@@ -1,8 +1,6 @@
 package org.erhs.stem.project.time_management.activity;
 
-import android.app.Activity;
-import android.app.ActivityManager;
-import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -24,13 +22,12 @@ public class SettingsActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Utility.setTheme(getApplicationContext(), this);
+        Utility.setTheme(getApplicationContext(), this, false);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.action_settings);
-
-        ApplicationMonitor.getInstance(getApplicationContext()).getActivityRepository().add(this);
     }
 
     @Override
@@ -45,12 +42,6 @@ public class SettingsActivity extends AppCompatActivity
         super.onPause();
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                 .unregisterOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        ApplicationMonitor.getInstance(getApplicationContext()).getActivityRepository().remove(this);
-        super.onDestroy();
     }
 
     @Override
@@ -83,9 +74,9 @@ public class SettingsActivity extends AppCompatActivity
                         });
             }
         } else if (getString(R.string.theme_key).equals(key)) {
-            ApplicationMonitor.getInstance(getApplicationContext())
-                    .getActivityRepository()
-                    .recreate();
+            Intent intent = new Intent(getApplicationContext(), LandingActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         }
     }
 }

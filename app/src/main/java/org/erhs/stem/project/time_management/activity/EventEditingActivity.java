@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import org.erhs.stem.project.time_management.R;
+import org.erhs.stem.project.time_management.common.Utility;
 import org.erhs.stem.project.time_management.domain.Event;
 import org.erhs.stem.project.time_management.domain.EventType;
 
@@ -37,6 +38,8 @@ public class EventEditingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Utility.setTheme(getApplicationContext(), this, false);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
         Toolbar toolbar = findViewById(R.id.toolbar);

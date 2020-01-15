@@ -23,7 +23,6 @@ import org.erhs.stem.project.time_management.R;
 import org.erhs.stem.project.time_management.common.Utility;
 import org.erhs.stem.project.time_management.domain.Event;
 import org.erhs.stem.project.time_management.domain.EventType;
-import org.erhs.stem.project.time_management.service.ApplicationMonitor;
 import org.erhs.stem.project.time_management.service.EventRepository;
 
 import java.text.SimpleDateFormat;
@@ -46,7 +45,8 @@ public class StatisticsChartActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Utility.setTheme(getApplicationContext(), this);
+        Utility.setTheme(getApplicationContext(), this, false);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -54,14 +54,6 @@ public class StatisticsChartActivity extends AppCompatActivity {
 
         createPieChart();
         createBarChart();
-
-        ApplicationMonitor.getInstance(getApplicationContext()).getActivityRepository().add(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        ApplicationMonitor.getInstance(getApplicationContext()).getActivityRepository().remove(this);
-        super.onDestroy();
     }
 
     @Override

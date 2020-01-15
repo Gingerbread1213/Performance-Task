@@ -1,7 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="color_primary_day">#008577</color>
+    <color name="color_primary_night">#000000</color>
+    <color name="color_primary_fresh">#008214</color>
+    <color name="color_primary_sky">#7b55fa</color>
+    <color name="color_primary_warm">#29286b</color>
+
+    <color name="color_primary_dark_day">#00574B</color>
+    <color name="color_primary_dark_night">#545454</color>
+    <color name="color_primary_dark_fresh">#008214</color>
+    <color name="color_primary_dark_sky">#5cb0ff</color>
+    <color name="color_primary_dark_warm">#29286b</color>
+
+    <color name="color_accent_day">#D81B60</color>
+    <color name="color_accent_night">#ffd500</color>
+    <color name="color_accent_fresh">#00945e</color>
+    <color name="color_accent_sky">#5cb0ff</color>
+    <color name="color_accent_warm">#fffb7d</color>
+
     <color name="colorCardView">#FFE0B2</color>
+
+    <color name="text_color_night">#ffd500</color>
+
+    <color name="window_background_night">#545451</color>
+    <color name="window_background_fresh">#aafc83</color>
+    <color name="window_background_sky">#5cb0ff</color>
+    <color name="window_background_warm">#9aedea</color>
+
 </resources>

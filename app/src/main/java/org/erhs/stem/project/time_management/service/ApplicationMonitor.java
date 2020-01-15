@@ -1,6 +1,5 @@
 package org.erhs.stem.project.time_management.service;
 
-import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -12,9 +11,7 @@ import androidx.core.app.NotificationManagerCompat;
 import org.erhs.stem.project.time_management.R;
 
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
 
 public class ApplicationMonitor {
 
@@ -22,7 +19,6 @@ public class ApplicationMonitor {
 
     private boolean notificationEnabled = true;
     private AlarmRepository alarmRepository = new AlarmRepository();
-    private ActivityRepository activityRepository = new ActivityRepository();
 
     private ApplicationMonitor(Context context) {
         createNotificationChannel(context);
@@ -49,10 +45,6 @@ public class ApplicationMonitor {
 
     public AlarmRepository getAlarmRepository() {
         return alarmRepository;
-    }
-
-    public ActivityRepository getActivityRepository() {
-        return activityRepository;
     }
 
     private void createNotificationChannel(Context context) {
@@ -86,25 +78,6 @@ public class ApplicationMonitor {
                 alarmPendingIntent.cancel();
             }
             alarmPendingIntents.clear();
-        }
-    }
-
-    public static class ActivityRepository {
-
-        private Set<Activity> activities = new LinkedHashSet<>();
-
-        public void add(Activity activity) {
-            activities.add(activity);
-        }
-
-        public void remove(Activity activity) {
-            activities.remove(activity);
-        }
-
-        public void recreate() {
-            for (Activity activity : activities) {
-                activity.recreate();
-            }
         }
     }
 }
