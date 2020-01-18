@@ -11,6 +11,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import org.erhs.stem.project.time_management.R;
+import org.erhs.stem.project.time_management.activity.AlarmActivity;
 import org.erhs.stem.project.time_management.activity.MainActivity;
 import org.erhs.stem.project.time_management.common.Config;
 import org.erhs.stem.project.time_management.common.Utility;
@@ -71,7 +72,10 @@ public class Receiver extends BroadcastReceiver {
 
                     NotificationManagerCompat.from(context).notify(notificationId, builder.build());
                 } else {
-                    // Pop up a dialog
+                    Intent alarmIntent = new Intent(context, AlarmActivity.class);
+                    alarmIntent.putExtra(context.getString(R.string.event_serializable), event);
+                    alarmIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(alarmIntent);
                 }
                 break;
             case SNOOZE:

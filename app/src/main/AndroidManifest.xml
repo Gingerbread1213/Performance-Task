@@ -28,8 +28,12 @@
         <activity android:name=".activity.AboutActivity" />
         <activity
             android:name=".activity.EventEditingActivity"
-            android:theme="@style/AppThemeDay.NoActionBar"/>
-        <receiver android:name=".service.Receiver"/>
+            android:theme="@style/AppThemeDay.NoActionBar" />
+        <activity
+            android:name=".activity.AlarmActivity"
+            android:theme="@style/AppThemeDay.NoActionBar" />
+
+        <receiver android:name=".service.Receiver" />
     </application>
 
 </manifest>
